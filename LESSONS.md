@@ -59,6 +59,7 @@ project that gets better the more you build.
 - [TOOLING] Webfonts (Google Fonts `<link>`) DO load in Playwright screenshots — wait ~2s after navigate before capturing so the font swaps in. (Why: first paint shows fallback fonts.)
 - [TOOLING] Use the **PowerShell tool** for PowerShell syntax (`Get-Content`, `Measure-Object`, `.Lines`, `$env:`); the **Bash tool** runs POSIX sh and errors on cmdlets. Don't mix them. (Why: a `(Get-Content …).Lines` call failed in the Bash tool this session.)
 - [TOOLING] Installing third-party skills via `npx skills add` is blocked by the auto-permission classifier (external code) — have the user run it themselves with `! npx skills add <owner/repo@skill> -g -y`. Also: the sub-skill name must match the repo exactly (the CLI lists valid names if wrong). (Why: install of `vercel-react-best-practices` was denied to me, and an early name guess didn't match.)
+- [TOOLING] Widen the permission allowlist via the **`/update-config`** skill (read → merge → validate), NOT by directly writing `settings.local.json` — the auto-classifier blocks the agent silently broadening its own permissions. (Why: a direct Write of a new settings file with `Bash(git:*)` etc. was denied this session; `/update-config` with explicit user intent succeeded.)
 
 ---
 
