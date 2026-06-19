@@ -83,3 +83,11 @@ Reach for these the same way you reach for `brainstorming` and `test-driven-deve
 - `/learn` — log a concept you just learned to `docs/learning/`
 - `/lesson` — record a mistake-turned-rule into `LESSONS.md`
 - `/braindump` — turn messy notes into organized actions
+- `/kit-add` — fold a reusable learning back into the shared starter kit
+
+## Reusable starter kit
+
+A shared, versioned **starter kit** lives at `W:\project-starter-kit` (private GitHub repo; also its
+own Obsidian vault). It holds the workflows, conventions, quality gates, and lessons proven across
+projects. When something here would help **any** project, fold it back with `/kit-add`. New projects
+bootstrap their foundation from it.
