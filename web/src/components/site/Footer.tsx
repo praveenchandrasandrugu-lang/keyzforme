@@ -21,7 +21,7 @@ export default function Footer() {
     <footer id="about" className="pt-[56px] pb-10 text-brandmuted text-[14px]">
       <Container>
         {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-[30px] mb-9">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.4fr_1fr_1fr_1fr] gap-x-[30px] gap-y-8 mb-9">
           {/* Brand column */}
           <div>
             <Logo />
