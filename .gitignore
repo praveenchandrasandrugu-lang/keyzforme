@@ -45,3 +45,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# personal convenience slash-commands that reference Praveen's private local
+# Obsidian vault (W:\Keyz-Notes\) — local-only tooling, not for the public repo.
+/.claude/commands/learn.md
+/.claude/commands/vault-note.md
