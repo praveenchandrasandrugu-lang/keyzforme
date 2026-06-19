@@ -48,6 +48,9 @@ project that gets better the more you build.
 - [UI] Test responsive/mobile layout in a real browser, not just by reading the JSX. (Why: layout bugs only show when rendered.)
 - [UI] Verify visual/interactive changes with Playwright MCP against the running app, not by reading code. (Why: this proven habit caught real bugs static review missed on the previous project.)
 - [UI] Prefer one shared component over duplicating markup — change once, changes everywhere. (Why: duplication drifts out of sync.)
+- [OVERLAYS] Every floating component (date picker, dropdown/select, combobox, popover, tooltip, menu) MUST render in a **portal** (Base UI/Radix do this by default — keep it) so it escapes ancestor `overflow:hidden/auto` clipping and stacking contexts. Use the lib's built-in **collision-aware positioning** (flip/shift) so it never opens off-screen, and give overlays a consistent high `z-index` layer. (Why: on the previous project date pickers/dropdowns rendered *under* parents and got cut off / opened where you couldn't see or pick a date.)
+- [OVERLAYS] Don't add `overflow-hidden`/`overflow-auto` to a container that holds an overlay trigger unless necessary; if a scroll container is required, confirm the overlay still portals out and stays visible. (Why: an `overflow` ancestor is the #1 cause of clipped popovers.)
+- [OVERLAYS] Verify EVERY date picker/dropdown in a real browser (Playwright) at the hard spots: near the viewport bottom/right edge, inside a table cell, and inside a scroll area — confirm it's fully visible and the date/option is clickable. (Why: these only break at edges/scroll, never in the happy-path middle.)
 
 ## Tooling (this Windows setup)
 
