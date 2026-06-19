@@ -410,7 +410,13 @@ Confirm `git status` does NOT show `.env.local`.
 
 **Files:** Create `docs/architecture/frontend.md`.
 
-- [ ] **Step 1:** Write a concise reference covering: folder structure (`src/app`, `src/components/site`, `src/components/ui`, `src/lib`); the **two-tier token system** (Tier 1 primitives in `@theme`; Tier 2 semantic roles for shadcn) and the enforced rule — *interactive components use ONLY semantic tokens / shadcn primitives; raw hex is banned; raw brand tokens (`navy`/`sage`) are allowed only in `src/components/site/*`*; font setup; and the "one component per homepage section" convention. Note that all shadcn components (button, table, date picker, dialog…) inherit the brand automatically via the semantic mapping, so new components are consistent by default. Keep under ~90 lines. State that `database.md` and `backend.md` will be added in Slice 2/3.
+- [ ] **Step 1:** Write a concise reference covering: folder structure (`src/app`, `src/components/site`, `src/components/ui`, `src/lib`); the **two-tier token system** (Tier 1 primitives in `@theme`; Tier 2 semantic roles for shadcn) and the enforced rule — *interactive components use ONLY semantic tokens / shadcn primitives; raw hex is banned; raw brand tokens (`navy`/`sage`) are allowed only in `src/components/site/*`*; font setup; and the "one component per homepage section" convention. Note that all shadcn components inherit the brand automatically via the semantic mapping, so new components are consistent by default. Keep under ~110 lines. State that `database.md` and `backend.md` will be added in Slice 2/3.
+
+  Also record the **approved frontend toolkit** (one tool per job; add per-slice, never all at once):
+  - **shadcn/ui** for all components (Button, Input, Select, Form, Card, Badge, Tabs, Table/Data Table, Dialog, Sheet, Popover, Dropdown, Tooltip, Sonner, Skeleton, Progress, Sidebar, Breadcrumb, Calendar/Date Picker, Command, Chart).
+  - **react-hook-form + zod** (forms + validation), **TanStack Table** (data tables), **Recharts** (charts), **date-fns** (dates), **lucide-react** (icons), **Framer Motion** (motion/delight).
+  - Add only when needed: TanStack Query, next-themes, zustand.
+  - Excluded by decision (avoid bloat / token conflicts): MUI/Ant/Chakra, Redux, styled-components/emotion, any second animation lib.
 
 - [ ] **Step 2 (commit):**
 
