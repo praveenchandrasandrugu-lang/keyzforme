@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyz — Homepage concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#F5F0E8; --surface:#FFFFFF; --navy:#1B3A6B; --ink:#1F2B3D; --muted:#566377;
+    --sage:#7C9A7E; --green:#3F6B4E; --pill:#DDE7DE; --pilltext:#3C5A45;
+    --line:#e7e0d2; --line2:#eceadf; --gold:#C08A2D;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.55;}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;color:var(--navy);margin:0;line-height:1.08;letter-spacing:-.5px;}
+  .accent{color:var(--green);font-style:italic;font-weight:600;}
+  p{margin:0;}
+  a{text-decoration:none;color:inherit;}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
+  .btn{display:inline-block;padding:13px 24px;border-radius:11px;font-weight:600;font-size:15px;font-family:'Inter';cursor:pointer;}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid #c9cfdb;}
+  .pill{display:inline-block;padding:7px 15px;border-radius:999px;font-size:13px;font-weight:600;background:var(--pill);color:var(--pilltext);}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sage);}
+
+  /* NAV */
+  nav.top{position:sticky;top:0;z-index:10;background:rgba(245,240,232,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  nav.top .inner{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{font-family:'Fraunces';font-weight:700;font-size:25px;color:var(--navy);letter-spacing:-.5px;}
+  .logo b{color:var(--sage);}
+  .navlinks{display:flex;gap:30px;font-size:15px;color:var(--muted);font-weight:500;}
+  .navlinks a:hover{color:var(--navy);}
+  .navcta{display:flex;gap:12px;align-items:center;}
+
+  /* HERO */
+  .hero{padding:72px 0 80px;}
+  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center;}
+  .hero h1{font-size:60px;font-weight:600;}
+  .hero p.lead{font-size:19px;color:var(--muted);margin:24px 0 32px;max-width:90%;}
+  .hero .actions{display:flex;gap:14px;align-items:center;}
+  .hero .reassure{margin-top:20px;font-size:13.5px;color:var(--muted);display:flex;gap:18px;}
+  .hero .reassure span{display:flex;align-items:center;gap:7px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--sage);display:inline-block;}
+
+  /* hero visual: readiness card */
+  .rcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 24px 60px -28px rgba(27,58,107,.35);}
+  .rcard .rtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .rcard .rtop .lbl{font-size:13px;color:var(--muted);font-weight:600;}
+  .ring{--p:72;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--green) calc(var(--p)*1%),#e8eef0 0);display:grid;place-items:center;}
+  .ring .inner{width:74px;height:74px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;}
+  .ring .inner b{font-family:'Fraunces';font-size:24px;color:var(--navy);line-height:1;}
+  .ring .inner small{font-size:10px;color:var(--muted);}
+  .rrow{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line2);font-size:14px;}
+  .rrow:first-of-type{border-top:none;}
+  .rrow .ok{color:var(--green);font-weight:700;}
+  .rrow .wait{color:var(--gold);font-weight:600;}
+  .offerprev{margin-top:18px;background:var(--cream);border-radius:14px;padding:14px 16px;}
+  .offerprev .oh{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
+  .offer{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 13px;margin-bottom:8px;font-size:13.5px;}
+  .offer:last-child{margin-bottom:0;}
+  .offer .rate{font-family:'Fraunces';font-weight:600;color:var(--navy);font-size:16px;}
+  .badge{font-size:11px;font-weight:700;background:var(--pill);color:var(--pilltext);padding:3px 9px;border-radius:999px;}
+
+  /* TRUST STRIP */
+  .trust{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#f1eadf;}
+  .trust .inner{display:flex;align-items:center;justify-content:space-between;padding:22px 0;gap:24px;flex-wrap:wrap;}
+  .stat{text-align:center;flex:1;min-width:140px;}
+  .stat b{font-family:'Fraunces';font-size:30px;color:var(--navy);display:block;font-weight:600;}
+  .stat span{font-size:13px;color:var(--muted);}
+
+  /* SECTION */
+  section{padding:88px 0;}
+  .shead{max-width:680px;margin:0 auto 52px;text-align:center;}
+  .shead h2{font-size:42px;font-weight:600;margin-top:14px;}
+  .shead p{font-size:17px;color:var(--muted);margin-top:16px;}
+
+  /* HOW IT WORKS */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .step{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 26px;}
+  .step .num{width:42px;height:42px;border-radius:12px;background:var(--pill);color:var(--green);display:grid;place-items:center;font-family:'Fraunces';font-weight:700;font-size:20px;margin-bottom:18px;}
+  .step h3{font-size:22px;margin-bottom:10px;}
+  .step p{font-size:15px;color:var(--muted);}
+
+  /* MARKETPLACE */
+  .mkt{background:var(--navy);color:#eaf0fb;}
+  .mkt h2{color:#fff;}
+  .mkt .accent{color:#9ec3a7;}
+  .mkt .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:54px;align-items:center;}
+  .mkt .lead{color:#b9c6df;font-size:17px;margin:18px 0 26px;}
+  .mkt ul{list-style:none;padding:0;margin:0 0 28px;}
+  .mkt li{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:15.5px;color:#dbe4f5;}
+  .check{flex:none;width:22px;height:22px;border-radius:50%;background:#2f5a87;color:#9ec3a7;display:grid;place-items:center;font-size:12px;font-weight:800;margin-top:1px;}
+  .compare{background:#fff;border-radius:18px;padding:20px;color:var(--ink);box-shadow:0 30px 60px -30px rgba(0,0,0,.5);}
+  .compare .ch{font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;}
+  .crow{display:grid;grid-template-columns:1.4fr .8fr .8fr auto;gap:10px;align-items:center;padding:13px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;font-size:14px;}
+  .crow.best{border-color:var(--sage);background:#f6faf6;box-shadow:0 0 0 1px var(--sage);}
+  .crow .who{font-weight:600;color:var(--navy);}
+  .crow .rate{font-family:'Fraunces';font-weight:600;font-size:17px;color:var(--navy);}
+  .crow .sub{font-size:11px;color:var(--muted);}
+  .tag-best{font-size:10.5px;font-weight:700;background:var(--sage);color:#13261a;padding:3px 8px;border-radius:999px;}
+
+  /* THREE-SIDED */
+  .audience{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .aud{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px 26px;}
+  .aud .ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:var(--pill);}
+  .aud h3{font-size:21px;margin-bottom:9px;}
+  .aud p{font-size:14.5px;color:var(--muted);margin-bottom:16px;}
+  .aud .lnk{font-size:14px;font-weight:600;color:var(--green);}
+  .aud .free{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;color:var(--sage);}
+
+  /* CTA BAND */
+  .ctaband{background:linear-gradient(135deg,#16315a,#1B3A6B 55%,#244b85);color:#fff;border-radius:26px;padding:56px;text-align:center;margin:0 0 0;}
+  .ctaband h2{color:#fff;font-size:40px;font-weight:600;}
+  .ctaband p{color:#bccae2;font-size:17px;margin:16px auto 28px;max-width:520px;}
+  .ctaband .btn-primary{background:#fff;color:var(--navy);}
+
+  /* FOOTER */
+  footer{padding:56px 0 40px;color:var(--muted);font-size:14px;}
+  footer .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px;margin-bottom:36px;}
+  footer h4{font-family:'Inter';font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--navy);margin:0 0 14px;}
+  footer a{display:block;margin-bottom:9px;color:var(--muted);}
+  footer a:hover{color:var(--navy);}
+  footer .bottom{border-top:1px solid var(--line);padding-top:22px;display:flex;justify-content:space-between;font-size:13px;}
+</style>
+</head>
+<body>
+
+<nav class="top"><div class="wrap inner">
+  <span class="logo">Key<b>z</b></span>
+  <div class="navlinks">
+    <a>How it works</a><a>The marketplace</a><a>For partners</a><a>About</a>
+  </div>
+  <div class="navcta"><a class="btn btn-ghost">Sign in</a><a class="btn btn-primary">Check my readiness</a></div>
+</div></nav>
+
+<!-- HERO -->
+<header class="hero"><div class="wrap grid">
+  <div>
+    <span class="pill">No cost to you, ever</span>
+    <h1 style="margin-top:18px;">Home ownership,<br><span class="accent">made human.</span></h1>
+    <p class="lead">Keyz brings your finances, a real coach, and the right lenders &amp; realtors into one place — so you go from “someday” to keys-in-hand with a plan, not a guess.</p>
+    <div class="actions">
+      <a class="btn btn-primary">Check my readiness →</a>
+      <a class="btn btn-ghost">See how it works</a>
+    </div>
+    <div class="reassure">
+      <span><i class="dot"></i> Free for buyers</span>
+      <span><i class="dot"></i> Bank-level security</span>
+      <span><i class="dot"></i> No credit impact</span>
+    </div>
+  </div>
+  <div class="rcard">
+    <div class="rtop">
+      <div><div class="lbl">Your home-readiness</div><div style="font-family:'Fraunces';font-size:20px;color:var(--navy);font-weight:600;margin-top:4px;">On track</div></div>
+      <div class="ring"><div class="inner"><div><b>72</b><br><small>/ 100</small></div></div></div>
+    </div>
+    <div class="rrow"><span>Down-payment savings</span><span class="ok">✓ Ready</span></div>
+    <div class="rrow"><span>Credit health</span><span class="ok">✓ Ready</span></div>
+    <div class="rrow"><span>Debt-to-income</span><span class="wait">2 steps left</span></div>
+    <div class="offerprev">
+      <div class="oh">Offers waiting when you're ready</div>
+      <div class="offer"><span>Lender · Summit Home Loans</span><span class="rate">6.1%</span></div>
+      <div class="offer"><span>Realtor · M. Alvarez</span><span class="badge">Top match</span></div>
+    </div>
+  </div>
+</div></header>
+
+<!-- TRUST -->
+<div class="trust"><div class="wrap inner">
+  <div class="stat"><b>1 place</b><span>Finances, coaching &amp; offers</span></div>
+  <div class="stat"><b>$0</b><span>Cost to home buyers</span></div>
+  <div class="stat"><b>Real data</b><span>Offers based on your actual position</span></div>
+  <div class="stat"><b>Side&nbsp;by&nbsp;side</b><span>Compare lenders &amp; realtors</span></div>
+</div></div>
+
+<!-- HOW IT WORKS -->
+<section><div class="wrap">
+  <div class="shead">
+    <span class="eyebrow">How it works</span>
+    <h2>Three steps from <span class="accent">wanting</span> to <span class="accent">ready</span>.</h2>
+    <p>Most people don't fail to buy a home because they can't — they fail because no one showed them the path. Keyz is that path.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Centralize your money</h3><p>Securely connect your accounts and see your full financial picture in one clean dashboard — no spreadsheets, no judgment.</p></div>
+    <div class="step"><div class="num">2</div><h3>Get coached to ready</h3><p>A real financial counselor builds your plan and coaches you up — improving your credit, savings, and debt until you genuinely qualify.</p></div>
+    <div class="step"><div class="num">3</div><h3>Compare real offers</h3><p>When you're ready, lenders and realtors compete for you. Compare real offers built on your actual financial position — side by side.</p></div>
+  </div>
+</div></section>
+
+<!-- MARKETPLACE -->
+<section class="mkt"><div class="wrap grid">
+  <div>
+    <span class="eyebrow" style="color:#9ec3a7;">The marketplace</span>
+    <h2 style="margin-top:14px;font-size:40px;">Let lenders &amp; realtors <span class="accent">compete for you.</span></h2>
+    <p class="lead">No more cold-calling banks or guessing if a rate is fair. Your verified financial profile goes to vetted partners, and the offers come to you — transparent and ranked.</p>
+    <ul>
+      <li><span class="check">✓</span> Offers based on your <b>real</b> data, not a credit-score guess</li>
+      <li><span class="check">✓</span> Compare rates, fees and fit in one view</li>
+      <li><span class="check">✓</span> You stay anonymous until <b>you</b> choose to connect</li>
+    </ul>
+    <a class="btn btn-ghost" style="color:#fff;border-color:#3d5e8c;">Explore the marketplace</a>
+  </div>
+  <div class="compare">
+    <div class="ch">Your lender offers · ranked for you</div>
+    <div class="crow best">
+      <div><div class="who">Summit Home Loans</div><div class="sub">30-yr fixed · $4,200 fees</div></div>
+      <div><div class="rate">6.08%</div><div class="sub">APR</div></div>
+      <div><div class="rate">$1,840</div><div class="sub">/mo</div></div>
+      <span class="tag-best">Best fit</span>
+    </div>
+    <div class="crow">
+      <div><div class="who">Harbor Credit Union</div><div class="sub">30-yr fixed · $3,100 fees</div></div>
+      <div><div class="rate">6.24%</div><div class="sub">APR</div></div>
+      <div><div class="rate">$1,879</div><div class="sub">/mo</div></div>
+      <span style="font-size:11px;color:var(--muted);">#2</span>
+    </div>
+    <div class="crow">
+      <div><div class="who">Nationwide Direct</div><div class="sub">30-yr fixed · $5,500 fees</div></div>
+      <div><div class="rate">6.31%</div><div class="sub">APR</div></div>
+      <div><div class="rate">$1,896</div><div class="sub">/mo</div></div>
+      <span style="font-size:11px;color:var(--muted);">#3</span>
+    </div>
+  </div>
+</div></section>
+
+<!-- THREE-SIDED -->
+<section><div class="wrap">
+  <div class="shead">
+    <span class="eyebrow">Built for everyone at the table</span>
+    <h2>One platform, <span class="accent">three sides</span> that win.</h2>
+  </div>
+  <div class="audience">
+    <div class="aud">
+      <div class="ico">🏠</div>
+      <h3>For home buyers</h3>
+      <p>Your finances, a real coach, and ranked offers — from “someday” to keys-in-hand.</p>
+      <span class="free">Always free →</span>
+    </div>
+    <div class="aud">
+      <div class="ico">🧭</div>
+      <h3>For financial counselors</h3>
+      <p>Coach more clients with their full picture in one place — and get paid to do it.</p>
+      <a class="lnk">Partner with us →</a>
+    </div>
+    <div class="aud">
+      <div class="ico">🤝</div>
+      <h3>For lenders &amp; realtors</h3>
+      <p>Meet ready, verified buyers actively comparing offers — not cold leads.</p>
+      <a class="lnk">List on Keyz →</a>
+    </div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section style="padding-top:0;"><div class="wrap">
+  <div class="ctaband">
+    <h2>Your first home is closer<br>than it feels.</h2>
+    <p>See where you stand today — in two minutes, with no credit impact and no cost.</p>
+    <a class="btn btn-primary">Check my readiness →</a>
+  </div>
+</div></section>
+
+<!-- FOOTER -->
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <span class="logo">Key<b>z</b></span>
+      <p style="margin-top:12px;max-width:260px;">Bringing finances, coaching and the right partners into one human path to home ownership.</p>
+    </div>
+    <div><h4>Product</h4><a>How it works</a><a>The marketplace</a><a>Readiness check</a></div>
+    <div><h4>Partners</h4><a>For counselors</a><a>For lenders</a><a>For realtors</a></div>
+    <div><h4>Company</h4><a>About</a><a>Contact</a><a>Privacy</a></div>
+  </div>
+  <div class="bottom"><span>© 2026 Keyz. All rights reserved.</span><span>Made with care for first-time buyers.</span></div>
+</div></footer>
+
+</body>
+</html>

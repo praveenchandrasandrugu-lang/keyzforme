@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyz — Design Directions</title>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#eef1f6; color:#0f172a; font-family:ui-sans-serif,system-ui,'Segoe UI',sans-serif; padding:32px 28px 60px; }
+  .wrap { max-width:1180px; margin:0 auto; }
+  h1 { font-size:26px; letter-spacing:-.5px; margin:0 0 6px; }
+  .subtitle { font-size:15px; color:#475569; max-width:760px; line-height:1.55; margin:0 0 28px; }
+  .subtitle em { color:#0f172a; font-style:normal; font-weight:600; }
+  .dir-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:1080px){ .dir-grid{ grid-template-columns:1fr; max-width:560px; margin:0 auto; } }
+  .dir { border-radius:16px; overflow:hidden; box-shadow:0 8px 30px rgba(15,23,42,.13); background:#fff; }
+  .dir .browserbar { display:flex; gap:7px; align-items:center; padding:10px 14px; background:rgba(0,0,0,.06); }
+  .dir .browserbar i { width:11px; height:11px; border-radius:50%; display:inline-block; background:#cbd5e1; }
+  .dir .stage { padding:30px 24px 34px; min-height:330px; display:flex; flex-direction:column; }
+  .dir .nav { display:flex; justify-content:space-between; align-items:center; font-size:13px; margin-bottom:38px; }
+  .dir .pill { padding:7px 14px; border-radius:999px; font-size:12px; font-weight:600; align-self:flex-start; margin-bottom:20px; }
+  .dir h3.head { font-size:28px; line-height:1.15; margin:0 0 14px; }
+  .dir p.sub { font-size:13.5px; line-height:1.55; margin:0 0 26px; opacity:.85; }
+  .dir .cta { align-self:flex-start; padding:12px 22px; border-radius:11px; font-size:13.5px; font-weight:700; }
+  .vibe { padding:16px 18px; font-size:13px; line-height:1.5; background:#0f172a; color:#cbd5e1; }
+  .vibe b { color:#fff; display:block; margin-bottom:3px; font-size:14px; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#64748b; margin:26px 0 10px; }
+
+  .A .stage{ background:#f8fafc; color:#0f172a; }
+  .A .logo{ font-weight:800; color:#1e3a8a; letter-spacing:-.5px; }
+  .A .nav a{ color:#475569; margin-left:14px; text-decoration:none; }
+  .A .pill{ background:#dbeafe; color:#1e40af; }
+  .A h3.head{ color:#0f172a; letter-spacing:-.5px; }
+  .A .accentword{ color:#2563eb; }
+  .A .cta{ background:#2563eb; color:#fff; }
+
+  .B .stage{ background:#fdf8f3; color:#3a2e26; font-family:Georgia,'Times New Roman',serif; }
+  .B .nav, .B .cta, .B .pill{ font-family:ui-sans-serif,system-ui,sans-serif; }
+  .B .logo{ font-weight:800; color:#b1502b; }
+  .B .nav a{ color:#7c6a5e; margin-left:14px; text-decoration:none; }
+  .B .pill{ background:#f6e2d3; color:#b1502b; }
+  .B h3.head{ color:#3a2e26; }
+  .B .accentword{ color:#c2622f; font-style:italic; }
+  .B .cta{ background:#c2622f; color:#fff; }
+
+  .C .stage{ background:#0b1020; color:#e7ecf6; }
+  .C .logo{ font-weight:900; color:#fff; letter-spacing:-1px; }
+  .C .nav a{ color:#94a3b8; margin-left:14px; text-decoration:none; }
+  .C .pill{ background:rgba(52,211,153,.15); color:#34d399; border:1px solid rgba(52,211,153,.35); }
+  .C h3.head{ color:#fff; font-weight:900; letter-spacing:-1px; background:linear-gradient(90deg,#fff,#a5b4fc); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .C .accentword{ color:#34d399; -webkit-text-fill-color:#34d399; }
+  .C .cta{ background:linear-gradient(90deg,#34d399,#22d3ee); color:#04231b; }
+  .C .browserbar{ background:#060a14; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">Keyz · Step 1 of design</span>
+  <h1>Which design direction feels right for Keyz?</h1>
+  <p class="subtitle">Same homepage content, three different moods. Don't judge exact colors yet — react to the overall <em>feeling</em>. Which one makes Keyz look like a company you'd trust with your financial future? Tell me your pick (A / B / C — one or two) in the terminal.</p>
+
+  <div class="dir-grid">
+
+    <div class="dir A">
+      <div class="browserbar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>For partners</a></span></div>
+        <span class="pill">Trusted by first-time buyers</span>
+        <h3 class="head">The path to your<br>first home, <span class="accentword">finally clear.</span></h3>
+        <p class="sub">See exactly where you stand, get coached to ready, then compare real lender &amp; realtor offers in one place.</p>
+        <span class="cta">Check my readiness &rarr;</span>
+      </div>
+      <div class="vibe"><b>A · Trust &amp; Clarity</b>Calm, clean, lots of breathing room. Like Stripe or a modern bank — credible and serious.</div>
+    </div>
+
+    <div class="dir B">
+      <div class="browserbar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>For partners</a></span></div>
+        <span class="pill">A friendlier way home</span>
+        <h3 class="head">Home ownership,<br><span class="accentword">made human.</span></h3>
+        <p class="sub">Real coaches in your corner, your finances in one place, and offers that fit the real you — not a credit-score guess.</p>
+        <span class="cta">Start my journey</span>
+      </div>
+      <div class="vibe"><b>B · Warm &amp; Human</b>Friendly, editorial, reassuring. Like a wellness app for your money — leans into the emotion of buying a home.</div>
+    </div>
+
+    <div class="dir C">
+      <div class="browserbar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>Partners</a></span></div>
+        <span class="pill">The home-buying marketplace</span>
+        <h3 class="head">Your data.<br>Your leverage.</h3>
+        <p class="sub">Get ready, then let lenders &amp; realtors <span class="accentword">compete for you</span> — offers ranked on your real financial position.</p>
+        <span class="cta">See how it works</span>
+      </div>
+      <div class="vibe"><b>C · Bold &amp; Confident</b>Dark, high-contrast, gradient accent. A fintech with swagger — "your data is your leverage."</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

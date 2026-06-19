@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keyz — Typography (on Harbor Navy + Sage)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#e9ebf0;color:#0f172a;font-family:'Inter',ui-sans-serif,system-ui,sans-serif;padding:30px 26px 64px;}
+  .wrap{max-width:1240px;margin:0 auto;}
+  h1{font-size:25px;letter-spacing:-.4px;margin:0 0 6px;}
+  .subtitle{font-size:14.5px;color:#475569;max-width:840px;line-height:1.55;margin:0 0 26px;}
+  .subtitle em{color:#0f172a;font-style:normal;font-weight:600;}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:1080px){.grid{grid-template-columns:1fr;max-width:560px;margin:0 auto;}}
+  .card{border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(15,23,42,.14);background:#fff;}
+  .bar{display:flex;gap:7px;align-items:center;padding:10px 14px;background:rgba(0,0,0,.06);}
+  .bar i{width:11px;height:11px;border-radius:50%;background:#cbd5e1;display:inline-block;}
+  /* Harbor Navy + Sage palette */
+  .stage{padding:30px 26px 34px;min-height:360px;display:flex;flex-direction:column;background:#F5F0E8;color:#1F2B3D;font-family:'Inter',sans-serif;}
+  .nav{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:34px;}
+  .nav .logo{font-weight:800;color:#1B3A6B;letter-spacing:-.3px;}
+  .nav a{margin-left:14px;text-decoration:none;color:#566377;}
+  .pill{align-self:flex-start;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:600;background:#DDE7DE;color:#3C5A45;margin-bottom:20px;}
+  h3.head{margin:0 0 14px;color:#1B3A6B;}
+  .head .accent{color:#3F6B4E;}
+  p.sub{font-size:13.5px;line-height:1.55;margin:0 0 24px;color:#46566b;max-width:90%;}
+  .cta{align-self:flex-start;padding:12px 22px;border-radius:11px;font-size:13.5px;font-weight:700;background:#1B3A6B;color:#fff;}
+  .specimen{margin-top:auto;padding-top:18px;border-top:1px solid #e4dccd;font-size:11.5px;color:#6b7280;letter-spacing:.04em;}
+  .foot{padding:15px 18px;font-size:12.5px;line-height:1.5;background:#0f172a;color:#cbd5e1;}
+  .foot b{color:#fff;display:block;margin-bottom:3px;font-size:13.5px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin:0 0 10px;}
+
+  /* A — Fraunces serif */
+  .tA h3.head{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:33px;line-height:1.08;letter-spacing:-.5px;}
+  .tA .head .accent{font-style:italic;}
+  .tA .specimen{font-family:'Fraunces',serif;font-style:italic;}
+
+  /* B — Plus Jakarta Sans */
+  .tB h3.head{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:31px;line-height:1.12;letter-spacing:-.8px;}
+  .tB .specimen{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;}
+
+  /* C — Space Grotesk */
+  .tC h3.head{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:31px;line-height:1.12;letter-spacing:-1px;}
+  .tC .specimen{font-family:'Space Grotesk',sans-serif;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">Keyz · Step 3 · typography on your chosen palette</span>
+  <h1>Same palette (Harbor Navy + Sage), three headline fonts</h1>
+  <p class="subtitle">Body text stays <em>Inter</em> (clean, trustworthy, great for finance) in all three — only the <em>headline</em> font changes. Which voice fits Keyz: warm-editorial, friendly-modern, or distinctive-techy? Pick A, B, or C.</p>
+
+  <div class="grid">
+
+    <div class="card tA">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>For partners</a></span></div>
+        <span class="pill">A friendlier way home</span>
+        <h3 class="head">Home ownership,<br><span class="accent">made human.</span></h3>
+        <p class="sub">Real coaches in your corner, your finances in one place, and offers that fit the real you.</p>
+        <span class="cta">Start my journey</span>
+        <div class="specimen">Fraunces · warm, literary, characterful</div>
+      </div>
+      <div class="foot"><b>A · Fraunces (serif)</b>Warm &amp; editorial — keeps the human feel you liked in “B,” but far less generic than a default serif. Feels considered and premium.</div>
+    </div>
+
+    <div class="card tB">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>For partners</a></span></div>
+        <span class="pill">A friendlier way home</span>
+        <h3 class="head">Home ownership,<br><span class="accent">made human.</span></h3>
+        <p class="sub">Real coaches in your corner, your finances in one place, and offers that fit the real you.</p>
+        <span class="cta">Start my journey</span>
+        <div class="specimen">Plus Jakarta Sans · friendly, rounded, modern</div>
+      </div>
+      <div class="foot"><b>B · Plus Jakarta Sans</b>Clean and friendly-modern. Reads as a current, approachable fintech — safe, legible, broadly liked. The “fresh but not risky” choice.</div>
+    </div>
+
+    <div class="card tC">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="stage">
+        <div class="nav"><span class="logo">Keyz</span><span><a>How it works</a><a>For partners</a></span></div>
+        <span class="pill">A friendlier way home</span>
+        <h3 class="head">Home ownership,<br><span class="accent">made human.</span></h3>
+        <p class="sub">Real coaches in your corner, your finances in one place, and offers that fit the real you.</p>
+        <span class="cta">Start my journey</span>
+        <div class="specimen">Space Grotesk · technical, confident, distinctive</div>
+      </div>
+      <div class="foot"><b>C · Space Grotesk</b>Distinctive and a touch techy — signals “engineering-led product.” The most fresh/non-generic, slightly less warm.</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
