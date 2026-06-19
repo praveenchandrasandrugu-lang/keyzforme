@@ -6,7 +6,9 @@
 
 **Architecture:** App Router, TypeScript strict. Design tokens live in `src/app/globals.css` via Tailwind v4 `@theme` (single source of truth for the locked palette/fonts). The homepage is composed in `src/app/page.tsx` from one presentational component per section under `src/components/site/`. Supabase clients (browser + server) are wired now but no tables yet — those arrive in Slice 2/3. Backend stays inside the Next.js app (Server Actions / Route Handlers); no separate server.
 
-**Tech Stack:** Next.js 15 (App Router), TypeScript (strict, no `any`), Tailwind CSS v4, shadcn/ui, lucide-react, `@supabase/supabase-js` + `@supabase/ssr`, deployed on Vercel.
+**Tech Stack:** Next.js 16 (App Router, Turbopack default), TypeScript (strict, no `any`), Tailwind CSS v4, shadcn/ui, lucide-react, `@supabase/supabase-js` + `@supabase/ssr`, deployed on Vercel.
+
+> **Verified 2026-06-19 against current docs.** `create-next-app@latest` now installs **Next.js 16** (not 15) — Turbopack is the stable default; the session-refresh file is `proxy.ts` (deferred to Slice 3). Fonts in Tailwind v4 MUST use `@theme inline`. `shadcn init` rewrites `globals.css`, so it runs BEFORE we author final tokens. Supabase uses the **publishable** key. These corrections are baked into the tasks below.
 
 **Source of truth for the homepage:** `mockups/homepage.html` — Praveen approved it exactly. Each section task below cites its line range in that file. Copy/markup MUST match it (copy/numbers are placeholders to refine later, but ship as-is now). Convert inline-styled HTML → React + Tailwind utilities mapped to the tokens from Task 0.3. Replace emoji icons (🏠🧭🤝) with lucide icons.
 
@@ -14,7 +16,7 @@
 
 **Branch:** work on `dev` (already current). Commit after each task. Push when Praveen approves (he has 2 unpushed commits + these).
 
-**Per CLAUDE.md rule 6:** before running scaffold/Supabase commands, fetch current docs via Context7 (`mcp__context7__resolve-library-id` → `query-docs`) for `next.js` (create-next-app flags, Tailwind v4 setup) and `@supabase/ssr`. Pin versions to whatever is current; the commands below reflect Next 15 / Tailwind v4 conventions and may need minor adjustment.
+**Per CLAUDE.md rule 6:** before running scaffold/Supabase commands, fetch current docs via Context7 (`mcp__context7__resolve-library-id` → `query-docs`) for `next.js`, `tailwindcss`, `shadcn/ui`, and `@supabase/ssr` to re-confirm the (already-verified) commands below still hold at execution time.
 
 ---
 
@@ -52,25 +54,27 @@ The repo is non-empty (`docs/`, `mockups/`, `CLAUDE.md`, etc.), so `create-next-
 
 **Files:** Creates `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `src/app/*`, `public/*`, `next-env.d.ts`.
 
-- [ ] **Step 1:** (Context7) Fetch current `create-next-app` usage for Next.js to confirm flags and Tailwind v4 defaults.
+- [ ] **Step 1:** (Context7) Fetch current `create-next-app` usage to confirm flags. NOTE: `@latest` = **Next.js 16** (Turbopack default). Do NOT use `--no-turbopack` (removed) or `--no-git` (wrong). `--yes` is required so Next 16's new prompts (defaults / linter / React Compiler / AGENTS.md) don't hang a non-interactive session. `--no-agents-md` is required — without it the scaffold generates its own `CLAUDE.md`/`AGENTS.md` that would overwrite this project's existing ones when files move to root.
 
-- [ ] **Step 2:** Scaffold into a temp dir (non-interactive flags so it doesn't prompt):
+- [ ] **Step 2:** Scaffold into a temp dir with fully non-interactive, version-correct flags:
 
 ```powershell
-npx create-next-app@latest _scaffold --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --no-turbopack --no-git
+npx create-next-app@latest _scaffold --yes --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm --disable-git --no-agents-md
 ```
+Expected generated files (Tailwind v4): NO `tailwind.config.*`; `postcss.config.mjs` with `@tailwindcss/postcss`; `globals.css` starting `@import "tailwindcss";`; `next.config.ts`; `eslint.config.mjs` (flat config).
 
-- [ ] **Step 3:** Move generated app files into the repo root, preserving our existing files. Merge `.gitignore` rather than overwriting.
+- [ ] **Step 3:** Move generated files into the repo root with an explicit resolved destination (a bare `Move-Item -Destination .` is unreliable for directories on Windows). Exclude `node_modules`/`.git`/`.gitignore`; merge `.gitignore` separately.
 
 ```powershell
-# move everything except node_modules and .gitignore up to root
+$root = (Get-Location).Path
 Get-ChildItem -Path _scaffold -Force |
   Where-Object { $_.Name -notin @('node_modules', '.gitignore', '.git') } |
-  ForEach-Object { Move-Item -Path $_.FullName -Destination . -Force }
-# append the scaffold's gitignore entries to ours (Next.js entries: /.next, /node_modules, etc.)
+  ForEach-Object { Move-Item -LiteralPath $_.FullName -Destination $root -Force }
+# append the scaffold's gitignore entries to ours (Next.js: /.next, /node_modules, /build, .env*, etc.)
 Get-Content _scaffold/.gitignore | Add-Content .gitignore
 Remove-Item _scaffold -Recurse -Force
 ```
+Confirm the existing root `CLAUDE.md` / `AGENTS.md` are untouched (the `--no-agents-md` flag should have prevented any scaffold version).
 
 - [ ] **Step 4:** De-duplicate `.gitignore` by hand (open it, remove any duplicate lines from the append). Ensure it ignores `/.next`, `/node_modules`, `.env*` (keep `!.env.example`).
 
@@ -127,72 +131,25 @@ git add tsconfig.json package.json
 git commit -m "chore: stricter TS config + typecheck script"
 ```
 
-## Task 0.3: Design tokens + fonts (the locked design system)
+## Task 0.3: Fonts + shadcn init + final theme tokens (correct order)
 
-Encode the "Harbor Navy + Sage" palette and Fraunces/Inter fonts once, so every component consumes tokens.
+The heart of the zero-tech-debt design system. **ORDER MATTERS:** `shadcn init` rewrites `globals.css` to its template, so we run it FIRST, then author the final merged token file on top. Fonts use `@theme inline` (a plain `@theme` breaks the next/font variable chain), and the primitive muted color is named `--color-brandmuted` to avoid colliding with shadcn's semantic `--muted`.
 
-**Files:** Modify `src/app/globals.css`, `src/app/layout.tsx`.
+**Two-tier token architecture:**
+- **Tier 1 — primitives:** raw brand values (`--color-navy`, `--color-sage`, …) + scale, in a plain `@theme` block (emits `bg-navy`, `text-navy`, …).
+- **Tier 2 — semantic roles:** shadcn's `--background`/`--primary`/`--card`/`--border`/`--ring`/… in `:root`, exposed via `@theme inline`, each mapped to a Tier-1 primitive. Interactive components (buttons, inputs, tables, date pickers, dialogs) consume ONLY semantic roles. Raw `navy`/`sage` primitives are used ONLY in marketing `src/components/site/*`. No raw hex in components, ever. (Recorded in `docs/architecture/frontend.md`, Task 0.6.)
 
-- [ ] **Step 1:** Replace `src/app/globals.css` with the Tailwind v4 import + `@theme` tokens (values lifted from `mockups/homepage.html` `:root`, lines 11–15) + base element styles (lines 16–27):
+**Files:** Creates `components.json`, `src/lib/utils.ts`. Modifies `src/app/layout.tsx`, `src/app/globals.css`.
 
-```css
-@import "tailwindcss";
-
-@theme {
-  --color-cream: #F5F0E8;
-  --color-surface: #FFFFFF;
-  --color-navy: #1B3A6B;
-  --color-ink: #1F2B3D;
-  --color-muted: #566377;
-  --color-sage: #7C9A7E;
-  --color-green: #3F6B4E;
-  --color-pill: #DDE7DE;
-  --color-pilltext: #3C5A45;
-  --color-line: #E7E0D2;
-  --color-line2: #ECEADF;
-  --color-gold: #C08A2D;
-
-  --font-serif: var(--font-fraunces);
-  --font-sans: var(--font-inter);
-}
-
-@layer base {
-  body {
-    background-color: var(--color-cream);
-    color: var(--color-ink);
-    font-family: var(--font-sans), system-ui, sans-serif;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  h1, h2, h3 {
-    font-family: var(--font-serif), Georgia, serif;
-    color: var(--color-navy);
-    line-height: 1.08;
-    letter-spacing: -0.5px;
-  }
-}
-```
-
-- [ ] **Step 2:** In `src/app/layout.tsx`, load fonts via `next/font/google` and expose them as CSS variables on `<html>`. Replace the scaffold's font setup with:
+- [ ] **Step 1 (fonts → layout.tsx):** Load fonts via `next/font/google` and put their CSS variables on `<html>`:
 
 ```tsx
 import type { Metadata } from "next";
 import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
-  display: "swap",
-});
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-inter",
-  display: "swap",
-});
+const fraunces = Fraunces({ subsets: ["latin"], weight: ["400", "600", "700"], style: ["normal", "italic"], variable: "--font-fraunces", display: "swap" });
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Keyz — Home ownership, made human.",
@@ -209,50 +166,158 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-- [ ] **Step 3 (verify):** Add a throwaway token check to `src/app/page.tsx` (e.g. a `<h1 className="font-serif text-navy">Token test</h1>` and a `bg-sage` box), run `npm run dev`, and use Playwright MCP to confirm Fraunces renders for the heading and the navy/sage colors are correct. Then revert the throwaway markup.
-
-- [ ] **Step 4 (commit):**
-
-```powershell
-git add src/app/globals.css src/app/layout.tsx
-git commit -m "feat: design tokens + Fraunces/Inter fonts"
-```
-
-## Task 0.4: Initialize shadcn/ui + lucide
-
-shadcn gives us `cn()` and a consistent component base for later slices. The homepage buttons are simple styled links (Task 1.2/1.3), but we still set shadcn up now.
-
-**Files:** Creates `components.json`, `src/lib/utils.ts`, `src/components/ui/button.tsx`. Modifies `package.json`.
-
-- [ ] **Step 1:** (Context7) Confirm current shadcn CLI init command for Tailwind v4 / Next 15.
-
-- [ ] **Step 2:** Init shadcn (choose defaults; base color neutral — our colors come from tokens):
+- [ ] **Step 2 (shadcn init — BEFORE authoring tokens):** (Context7) Confirm current `shadcn init` for Tailwind v4 + Next 16 + `--src-dir`, then:
 
 ```powershell
 npx shadcn@latest init
+```
+Accept the Tailwind-v4 path. This creates `components.json` + `src/lib/utils.ts` and REWRITES `src/app/globals.css` with its template (`@import "tailwindcss"`, `@custom-variant dark`, `@theme inline`, full `:root`/`.dark` in oklch, a base layer). Expected — we overwrite the values in Step 4.
+
+- [ ] **Step 3 (verify config path):** In `components.json` confirm `"css": "src/app/globals.css"` and `"tailwind.config": ""` (v4 = no JS config). With `--src-dir`, init occasionally guesses `app/globals.css` — if so, fix it and delete any stray `app/` file it created.
+
+- [ ] **Step 4 (author final globals.css):** Replace `src/app/globals.css` with this exact structure — primitives (plain `@theme`), fonts (`@theme inline`), semantic mapping (`@theme inline` + `:root`), base layer:
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";                 /* added by shadcn init — keep */
+@custom-variant dark (&:is(.dark *));      /* added by shadcn init — keep */
+
+/* Tier 1 — brand primitives (static; emit bg-navy/text-navy/etc.) */
+@theme {
+  --color-cream: #F5F0E8;
+  --color-surface: #FFFFFF;
+  --color-navy: #1B3A6B;
+  --color-ink: #1F2B3D;
+  --color-brandmuted: #566377;   /* muted body text → text-brandmuted in marketing */
+  --color-sage: #7C9A7E;
+  --color-green: #3F6B4E;
+  --color-pill: #DDE7DE;
+  --color-pilltext: #3C5A45;
+  --color-line: #E7E0D2;
+  --color-line2: #ECEADF;
+  --color-gold: #C08A2D;
+  --shadow-card: 0 24px 60px -28px rgba(27, 58, 107, 0.35);
+}
+
+/* fonts + any var()-referencing token MUST be inline or the utility won't resolve */
+@theme inline {
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+/* Tier 2 — shadcn semantic roles exposed as utilities, each → a Tier-1 primitive */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-navy);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--color-pill);
+  --secondary-foreground: var(--color-pilltext);
+  --muted: var(--color-pill);
+  --muted-foreground: var(--color-brandmuted);
+  --accent: var(--color-sage);
+  --accent-foreground: var(--color-pilltext);
+  --destructive: oklch(0.577 0.245 27.325);   /* keep shadcn's red */
+  --border: var(--color-line);
+  --input: var(--color-line);
+  --ring: var(--color-navy);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-serif), Georgia, serif;
+    color: var(--color-navy);
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+  }
+}
+```
+Site is light-only; leave `.dark` unused. `:root` is the single place mapping semantic→primitive.
+
+- [ ] **Step 5 (verify):** Add a throwaway block to `src/app/page.tsx`: `<h1 className="font-serif text-navy">Token test</h1>`, a `bg-sage` box, `<p className="text-brandmuted">muted</p>`. `npm run dev` + Playwright confirm Fraunces renders and navy/sage/brandmuted are correct; then revert. `npm run build` — pass.
+
+- [ ] **Step 6 (commit):**
+
+```powershell
+git add src/app/layout.tsx src/app/globals.css components.json src/lib/utils.ts
+git commit -m "feat: two-tier design tokens + fonts + shadcn theme base"
+```
+
+## Task 0.4: Add base components + lucide, verify on-brand
+
+shadcn is initialized and themed (Task 0.3). Add the first component + icons and prove the brand mapping works. Every shadcn component added in later slices (table, date picker, form, dialog…) inherits this theme automatically.
+
+**Files:** Creates `src/components/ui/button.tsx`. Modifies `package.json`.
+
+- [ ] **Step 1:**
+
+```powershell
 npx shadcn@latest add button
 npm install lucide-react
 ```
 
-- [ ] **Step 3 (verify):**
+- [ ] **Step 2 (verify brand mapping):** Temporarily render `<Button>Primary</Button>` and `<Button variant="outline">Outline</Button>` on the page; `npm run dev` + Playwright confirm the primary button is **navy** (not gray) and the outline border/focus ring use brand colors. Remove the temporary markup.
+
+- [ ] **Step 3 (verify build):**
 
 ```powershell
 npm run typecheck ; npm run build
 ```
-Expected: pass. `src/lib/utils.ts` (cn) and `src/components/ui/button.tsx` exist.
+Expected: pass. `src/components/ui/button.tsx` exists; default Button renders on-brand.
 
 - [ ] **Step 4 (commit):**
 
 ```powershell
 git add -A
-git commit -m "chore: init shadcn/ui + lucide-react"
+git commit -m "chore: add shadcn button + lucide-react"
 ```
 
 ## Task 0.5: Wire Supabase (clients + env), no tables yet
 
 **Files:** Creates `src/lib/supabase/client.ts`, `src/lib/supabase/server.ts`, `.env.local` (git-ignored), `.env.example` (committed). Modifies `package.json`.
 
-- [ ] **Step 1:** Create a Supabase project (dashboard at supabase.com OR the Supabase MCP `create_project` — note it requires a cost confirmation). Copy the **Project URL** and **anon/publishable key**.
+> **Key naming:** current Supabase uses the **publishable** key (`sb_publishable_...`), env name `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. (Legacy `anon` keys still work, but we start on the current path — zero tech debt.) Use this exact name in ALL five places: `.env.local`, `.env.example`, `client.ts`, `server.ts`, and Vercel (Task 0.7).
+>
+> **Session refresh deferred:** Supabase SSR normally ships a `proxy.ts` (Next 16; `middleware.ts` on Next 15) that refreshes auth tokens. Slice 0 has no auth/tables, so the server client is **read-only** and we deliberately defer that file to **Slice 3 (auth)**. Until then the `setAll` try/catch is a harmless no-op.
+
+- [ ] **Step 1:** Create a Supabase project (dashboard at supabase.com OR the Supabase MCP `create_project` — requires a cost confirmation). Copy the **Project URL** and **publishable key** (`sb_publishable_...`).
 
 - [ ] **Step 2:** Install SDKs:
 
@@ -264,14 +329,14 @@ npm install @supabase/supabase-js @supabase/ssr
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR-ANON-KEY
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_YOUR_KEY
 ```
 
 - [ ] **Step 4:** Create `.env.example` (committed, no secrets):
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
 - [ ] **Step 5:** (Context7) Fetch current `@supabase/ssr` browser/server client patterns, then create `src/lib/supabase/client.ts`:
@@ -282,12 +347,12 @@ import { createBrowserClient } from "@supabase/ssr";
 export function createClient() {
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
   );
 }
 ```
 
-- [ ] **Step 6:** Create `src/lib/supabase/server.ts` using the cookie-based server client (exact cookie API per Context7 — the shape below is the @supabase/ssr pattern):
+- [ ] **Step 6:** Create `src/lib/supabase/server.ts` (Next 16 async `cookies()`; `getAll`/`setAll` per current @supabase/ssr docs):
 
 ```ts
 import { createServerClient } from "@supabase/ssr";
@@ -297,7 +362,7 @@ export async function createClient() {
   const cookieStore = await cookies();
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
     {
       cookies: {
         getAll() {
@@ -309,7 +374,7 @@ export async function createClient() {
               cookieStore.set(name, value, options),
             );
           } catch {
-            // called from a Server Component — safe to ignore when middleware refreshes sessions
+            // Server Component context — no-op until the Slice 3 session-refresh proxy exists
           }
         },
       },
@@ -318,7 +383,18 @@ export async function createClient() {
 }
 ```
 
-- [ ] **Step 7 (verify connectivity):** Create a temporary route `src/app/health/route.ts` that calls the server client and returns `{ ok: true }` if no throw; hit `http://localhost:3000/health` with Playwright/`browser_navigate`, confirm `ok: true`, then delete the route.
+- [ ] **Step 7 (verify REAL connectivity):** `createClient()` alone opens no connection — a bare `{ ok: true }` proves nothing. Create a temporary `src/app/health/route.ts` that does a real round-trip to the Supabase Auth server (works with no tables and no session):
+
+```ts
+import { createClient } from "@/lib/supabase/server";
+
+export async function GET() {
+  const supabase = await createClient();
+  const { error } = await supabase.auth.getClaims(); // real round-trip; no session is fine
+  return Response.json({ ok: !error, error: error?.message ?? null });
+}
+```
+`npm run dev`, navigate to `http://localhost:3000/health` with Playwright, confirm `{ ok: true, error: null }` (a wrong URL/key surfaces as `ok: false`). Then DELETE the route.
 
 - [ ] **Step 8 (verify):** `npm run typecheck ; npm run build` — pass.
 
@@ -334,7 +410,7 @@ Confirm `git status` does NOT show `.env.local`.
 
 **Files:** Create `docs/architecture/frontend.md`.
 
-- [ ] **Step 1:** Write a concise reference covering: folder structure (`src/app`, `src/components/site`, `src/components/ui`, `src/lib`), the design-token system (tokens in `globals.css @theme`, consumed as `text-navy`, `bg-cream`, `font-serif`, etc. — never hardcode hex in components), font setup, and the "one component per homepage section" convention. Keep under ~80 lines. State that `database.md` and `backend.md` will be added in Slice 2/3.
+- [ ] **Step 1:** Write a concise reference covering: folder structure (`src/app`, `src/components/site`, `src/components/ui`, `src/lib`); the **two-tier token system** (Tier 1 primitives in `@theme`; Tier 2 semantic roles for shadcn) and the enforced rule — *interactive components use ONLY semantic tokens / shadcn primitives; raw hex is banned; raw brand tokens (`navy`/`sage`) are allowed only in `src/components/site/*`*; font setup; and the "one component per homepage section" convention. Note that all shadcn components (button, table, date picker, dialog…) inherit the brand automatically via the semantic mapping, so new components are consistent by default. Keep under ~90 lines. State that `database.md` and `backend.md` will be added in Slice 2/3.
 
 - [ ] **Step 2 (commit):**
 
@@ -353,11 +429,16 @@ This needs interactive login — Praveen runs the auth step (suggest the `!` pre
 git push origin dev
 ```
 
-- [ ] **Step 2:** Import the repo at vercel.com (New Project → import `keyzforme`) OR `npx vercel link`. Framework auto-detects Next.js.
+- [ ] **Step 2:** Link the local dir from the CLI so Step 4 is non-interactive (do this, not just a dashboard import): `npx vercel link`. Framework auto-detects Next.js.
 
-- [ ] **Step 3:** In Vercel Project Settings → Environment Variables, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (same values as `.env.local`).
+- [ ] **Step 3:** Add env vars BEFORE the first build (a build without them runs with `undefined`). Either in Vercel Project Settings → Environment Variables, or via CLI, add the SAME names as `.env.local`:
 
-- [ ] **Step 4:** Deploy:
+```powershell
+npx vercel env add NEXT_PUBLIC_SUPABASE_URL production
+npx vercel env add NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY production
+```
+
+- [ ] **Step 4:** Deploy (now non-interactive since the dir is linked and env vars exist):
 
 ```powershell
 npx vercel --prod
@@ -375,13 +456,15 @@ gh issue close 1 --comment "Foundation deployed: <vercel-url>"
 
 # SLICE 1 — MARKETING HOMEPAGE (issue #2)
 
-**Method for every section task below:** create the component file; port the markup from the cited `mockups/homepage.html` lines, converting `class=` → `className`, inline `style=` and the mockup's CSS classes → Tailwind utilities using Task 0.3 tokens (e.g. `.navy` → `text-navy`/`bg-navy`, `.muted` → `text-muted`, `--line` borders → `border-line`); keep the **exact copy**; then verify the section in a real browser against the mockup via Playwright MCP. Commit per section. Mark `this.layout` widths off the mockup `.wrap` (`max-width:1140px; padding:0 28px;`) — build a shared container utility.
+**Method for every section task below:** create the component file; port the markup from the cited `mockups/homepage.html` lines, converting `class=` → `className`, inline `style=` and the mockup's CSS classes → Tailwind utilities using Task 0.3 tokens; keep the **exact copy**; then verify the section in a real browser against the mockup via Playwright MCP. Commit per section. Use a shared container utility for the mockup's `.wrap` (`max-width:1140px; padding:0 28px;`) → `mx-auto max-w-[1140px] px-7`.
+
+**Token mapping for marketing components:** `.navy` → `text-navy`/`bg-navy`; `--line` borders → `border-line`. ⚠️ The mockup's muted text color (`--muted: #566377`) maps to **`text-brandmuted`**, NOT `text-muted` — `text-muted`/`bg-muted` are now shadcn surface roles (light pill color). Wherever a task below says "muted text," use `text-brandmuted`. Headline accent words (`.accent`) → `text-green italic font-semibold`. The sage accent (`bg-sage`/`text-sage`) is for decoration/large only, never small text (contrast).
 
 ## Task 1.1: Homepage shell + section skeletons
 
 **Files:** Modify `src/app/page.tsx`.
 
-- [ ] **Step 1:** Build `page.tsx` importing all nine section components (created in later tasks) in mockup order. Until each exists, stub missing ones inline so the file compiles. Final order:
+- [ ] **Step 1:** Build `page.tsx` importing the eight page-level section components (created in later tasks; `ReadinessCard` is internal to `Hero`, not imported here) in mockup order. Until each exists, stub missing ones inline so the file compiles. Final order:
 
 ```tsx
 import { Nav } from "@/components/site/Nav";
@@ -435,7 +518,7 @@ export default function HomePage() {
 - [ ] **Step 1:** `Hero` — two-column grid (`md:grid-cols-[1.05fr_.95fr] gap-[54px] items-center`, stacks to one column on mobile), padding `pt-[72px] pb-20`, in `.wrap`. Left column:
   - Pill: "No cost to you, ever" (`.pill` → `rounded-full bg-pill text-pilltext px-[15px] py-[7px] text-[13px] font-semibold`).
   - `<h1>` `text-[60px] font-semibold` (responsive: smaller on mobile, e.g. `text-4xl md:text-[60px]`): "Home ownership," <br/> italic-sage accent "made human." (`.accent` → `text-green italic font-semibold`).
-  - Lead `<p className="text-[19px] text-muted my-[24px_0_32px] max-w-[90%]">`: exact copy from line 144.
+  - Lead `<p className="text-[19px] text-brandmuted my-[24px_0_32px] max-w-[90%]">`: exact copy from line 144.
   - Actions: primary "Check my readiness →" + ghost "See how it works".
   - Reassure row (line 149–153): three items each with a sage dot — "Free for buyers", "Bank-level security", "No credit impact".
 
@@ -446,7 +529,7 @@ export default function HomePage() {
     <div className="grid h-24 w-24 place-items-center rounded-full"
          style={{ background: "conic-gradient(var(--color-green) 72%, #e8eef0 0)" }}>
       <div className="grid h-[74px] w-[74px] place-items-center rounded-full bg-white text-center">
-        <div><b className="font-serif text-2xl text-navy leading-none">72</b><br /><small className="text-[10px] text-muted">/ 100</small></div>
+        <div><b className="font-serif text-2xl text-navy leading-none">72</b><br /><small className="text-[10px] text-brandmuted">/ 100</small></div>
       </div>
     </div>
     ```
@@ -524,7 +607,7 @@ export default function HomePage() {
 
 **Files:** Create `src/components/site/Footer.tsx`; finalize `src/app/page.tsx` (add `id="about"` target if used).
 
-- [ ] **Step 1:** `footer py-[56px_0_40px] text-muted text-[14px]`. Four-column grid (`grid-cols-[1.4fr_1fr_1fr_1fr] gap-[30px]`, stacks mobile):
+- [ ] **Step 1:** `footer py-[56px_0_40px] text-brandmuted text-[14px]`. Four-column grid (`grid-cols-[1.4fr_1fr_1fr_1fr] gap-[30px]`, stacks mobile):
   - Brand col: Keyz logo + tagline (line 271).
   - Product: How it works / The marketplace / Readiness check.
   - Partners: For counselors / For lenders / For realtors.
