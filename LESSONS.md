@@ -59,4 +59,14 @@ project that gets better the more you build.
 
 ---
 
+## Planning & scaffolding (2026-06-19)
+
+- [PLAN] Verify a plan against CURRENT docs (parallel reviewer subagents + Context7) BEFORE executing it — it caught that `create-next-app@latest` now installs **Next.js 16, not 15**, plus a Tailwind-v4 font bug. (Why: a plan written from memory bakes in version-stale assumptions that break on the first command.)
+- [SCAFFOLD] `create-next-app` refuses a non-empty dir: scaffold into a temp folder, then move files to root with `Move-Item -LiteralPath ... -Destination $root` (a bare `-Destination .` is unreliable for dirs on Windows). Pass `--yes --disable-git --no-agents-md` (the last protects an existing `CLAUDE.md`/`AGENTS.md` from being overwritten). (Why: missing `--yes` hangs on Next 16 prompts; `--no-turbopack`/`--no-git` are wrong flags.)
+- [TAILWIND] Tailwind v4: define `--color-*` in plain `@theme` (emits `bg-*`/`text-*`), but any token that references another var (fonts → next/font vars) MUST go in `@theme inline` or the utility won't resolve. (Why: plain `@theme` flattens the value and breaks the next/font variable chain.)
+- [SHADCN] `shadcn init` REWRITES `globals.css` — run it BEFORE authoring final tokens, then layer tokens on top. Its `-d` default is `base-nova`/Base UI (`@base-ui/react`), not Radix. We chose Base UI deliberately; port Radix snippets (`asChild` → `render` prop). (Why: init clobbered hand-written CSS; the foundation lib changes which imports work.)
+- [TOKENS] Don't name a brand primitive `--color-muted` — it collides with shadcn's semantic `--muted` and silently corrupts the theme. Use a distinct name (`--color-brandmuted`). (Why: same utility name, last definition wins.)
+- [SUPABASE] Current key is the **publishable** key (`sb_publishable_…`, env `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), not the legacy `anon` key. A connectivity health check must do a real round-trip (`await supabase.auth.getClaims()`) — constructing the client throws nothing. (Why: legacy naming is silent tech debt; a no-op check proves nothing.)
+- [SUBAGENT] When dispatching an implementer, specify which files go in which commit explicitly — a literal `git add fileA fileB` put `package.json` in the wrong commit, leaving an earlier commit non-buildable. (Why: cosmetic but violates "every commit builds".)
+
 _Newest project-specific lessons go below as we build._
