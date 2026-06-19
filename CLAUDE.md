@@ -48,7 +48,10 @@ this loop — use them.
 ## Conventions
 
 Full, current, beginner-friendly conventions live in `docs/CONVENTIONS.md`. Read it once;
-it explains the *why*, not just the *what*.
+it explains the *why*, not just the *what*. **Enforced** quality gates (pre-commit hooks, CI,
+security/performance/reliability checklists) live in `docs/QUALITY-GATES.md` — wiring the husky
+pre-commit hook is a foundation task you can do now. `docs/SOFTWARE-FOUNDATIONS.md` is the
+plain-English *why* behind the 8 pillars of solid software.
 
 ## Design & frontend skills (this is a website — use them)
 
