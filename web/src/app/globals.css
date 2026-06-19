@@ -20,6 +20,22 @@
   --color-progress-track: #E8EEF0;
   --color-gold: #C08A2D;
   --shadow-card: 0 24px 60px -28px rgba(27, 58, 107, 0.35);
+
+  /* warm trust band */
+  --color-creamband: #F1EADF;
+
+  /* marketplace (dark section) palette */
+  --color-mktink: #EAF0FB;      /* default text on navy */
+  --color-mktaccent: #9EC3A7;   /* sage-tint eyebrow + accent + check glyph */
+  --color-mktlead: #B9C6DF;     /* lead paragraph */
+  --color-mktli: #DBE4F5;       /* list item text */
+  --color-mktchip: #2F5A87;     /* check chip background */
+  --color-mktborder: #3D5E8C;   /* ghost button border on navy */
+  --color-bestbg: #F6FAF6;      /* best-fit row background */
+  --color-bestink: #13261A;     /* best-fit tag text */
+
+  /* compare card shadow */
+  --shadow-compare: 0 30px 60px -30px rgba(0,0,0,0.5);
 }
 
 /* fonts + any var()-referencing token MUST be inline or the utility won't resolve */
