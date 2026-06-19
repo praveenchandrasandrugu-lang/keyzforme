@@ -54,6 +54,8 @@ project that gets better the more you build.
 - [TOOLING] The brainstorming **visual-companion server dies between turns** here (owner-PID watchdog + background-process reaping). Don't rely on it — instead write **standalone HTML mockups** to `mockups/` and have the user open them via `file:///W:/Keyzforme/mockups/<file>.html`. (Why: the live server got reaped every turn; static files just work.)
 - [TOOLING] **Playwright MCP blocks the `file://` protocol.** To screenshot a local HTML file for verification, serve the folder first (`python -m http.server <port> --bind 127.0.0.1`) and navigate to `http://127.0.0.1:<port>/<file>.html`. (Why: direct file:// navigation errors out.)
 - [TOOLING] Webfonts (Google Fonts `<link>`) DO load in Playwright screenshots — wait ~2s after navigate before capturing so the font swaps in. (Why: first paint shows fallback fonts.)
+- [TOOLING] Use the **PowerShell tool** for PowerShell syntax (`Get-Content`, `Measure-Object`, `.Lines`, `$env:`); the **Bash tool** runs POSIX sh and errors on cmdlets. Don't mix them. (Why: a `(Get-Content …).Lines` call failed in the Bash tool this session.)
+- [TOOLING] Installing third-party skills via `npx skills add` is blocked by the auto-permission classifier (external code) — have the user run it themselves with `! npx skills add <owner/repo@skill> -g -y`. Also: the sub-skill name must match the repo exactly (the CLI lists valid names if wrong). (Why: install of `vercel-react-best-practices` was denied to me, and an early name guess didn't match.)
 
 ---
 
