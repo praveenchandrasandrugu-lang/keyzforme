@@ -38,6 +38,10 @@ yarn-error.log*
 /.superpowers/
 /.playwright-mcp/
 /verify-*.jpeg
+# local verification screenshots + dev server log (root-level only; never commit)
+/*.png
+/*.jpeg
+/.next-dev.log
 
 # NOTE: /mockups/ is intentionally committed — homepage.html is the approved
 # design reference the real build must match.
