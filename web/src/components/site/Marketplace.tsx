@@ -3,17 +3,13 @@ import { cn } from "@/lib/utils";
 import Container from "@/components/site/Container";
 import SectionHeading from "@/components/site/SectionHeading";
 
-const bullets = [
+const bullets: React.ReactNode[] = [
   <>
-    See <b>real</b> rates and fees built on <b>your</b> actual credit and income — not generic
-    estimates.
+    Offers based on your <b>real</b> data, not a credit-score guess
   </>,
+  <>Compare rates, fees and fit in one view</>,
   <>
-    Lenders and realtors compete, so <b>you</b> get their best offer — not a take-it-or-leave-it
-    rate.
-  </>,
-  <>
-    Compare everything side by side: rate, fees, monthly payment, and total cost over time.
+    You stay anonymous until <b>you</b> choose to connect
   </>,
 ];
 
@@ -30,14 +26,14 @@ const rows: LenderRow[] = [
   {
     who: "Summit Home Loans",
     fees: "30-yr fixed · $4,200 fees",
-    apr: "6.08% APR",
-    monthly: "$1,840 /mo",
+    apr: "6.08%",
+    monthly: "$1,840",
     rank: "Best fit",
     best: true,
   },
   {
     who: "Harbor Credit Union",
-    fees: "$3,100 fees",
+    fees: "30-yr fixed · $3,100 fees",
     apr: "6.24%",
     monthly: "$1,879",
     rank: "#2",
@@ -45,7 +41,7 @@ const rows: LenderRow[] = [
   },
   {
     who: "Nationwide Direct",
-    fees: "$5,500 fees",
+    fees: "30-yr fixed · $5,500 fees",
     apr: "6.31%",
     monthly: "$1,896",
     rank: "#3",
@@ -75,8 +71,9 @@ export default function Marketplace() {
               className="text-left mx-0 mb-0"
             />
             <p className="text-mktlead text-[17px] mt-[18px] mb-[26px]">
-              When you hit your readiness score, Keyz opens your profile to a curated
-              network of lenders and realtors. They come to <b>you</b> — with real numbers.
+              No more cold-calling banks or guessing if a rate is fair. Your verified
+              financial profile goes to vetted partners, and the offers come to you —
+              transparent and ranked.
             </p>
             <ul className="list-none p-0 m-0 mb-[28px]">
               {bullets.map((bullet, i) => (
@@ -125,11 +122,13 @@ export default function Marketplace() {
                   <p className="font-serif font-semibold text-[17px] text-navy leading-tight">
                     {row.apr}
                   </p>
+                  <p className="text-[11px] text-brandmuted">APR</p>
                 </div>
                 <div>
                   <p className="font-serif font-semibold text-[17px] text-navy leading-tight">
                     {row.monthly}
                   </p>
+                  <p className="text-[11px] text-brandmuted">/mo</p>
                 </div>
                 <div>
                   {row.best ? (
