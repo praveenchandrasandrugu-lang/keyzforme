@@ -16,7 +16,8 @@
   --color-pilltext: #3C5A45;
   --color-line: #E7E0D2;
   --color-line2: #ECEADF;
-  --color-linecool: #c9cfdb;
+  --color-linecool: #C9CFDB;
+  --color-progress-track: #E8EEF0;
   --color-gold: #C08A2D;
   --shadow-card: 0 24px 60px -28px rgba(27, 58, 107, 0.35);
 }
@@ -54,6 +55,7 @@
 }
 
 :root {
+  --nav-h: 72px;
   --radius: 0.75rem;
   --background: var(--color-cream);
   --foreground: var(--color-ink);

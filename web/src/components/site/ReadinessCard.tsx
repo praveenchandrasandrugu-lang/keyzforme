@@ -1,4 +1,5 @@
 import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ReadinessRowProps {
   label: string;
@@ -10,15 +11,16 @@ interface ReadinessRowProps {
 function ReadinessRow({ label, status, statusText, isFirst }: ReadinessRowProps) {
   return (
     <div
-      className={`flex items-center justify-between py-3 text-[14px] ${
-        isFirst ? "" : "border-t border-line2"
-      }`}
+      className={cn(
+        "flex items-center justify-between py-3 text-[14px]",
+        !isFirst && "border-t border-line2"
+      )}
     >
       <span className="text-ink">{label}</span>
       {status === "ready" ? (
         <span className="flex items-center gap-1 text-green font-bold">
           <Check size={14} strokeWidth={3} />
-          Ready
+          {statusText}
         </span>
       ) : (
         <span className="text-gold font-semibold">{statusText}</span>
@@ -45,7 +47,7 @@ export default function ReadinessCard() {
         <div
           className="w-24 h-24 rounded-full grid place-items-center"
           style={{
-            background: "conic-gradient(var(--color-green) 72%, #e8eef0 0)",
+            background: "conic-gradient(var(--color-green) 72%, var(--color-progress-track) 0)",
           }}
         >
           <div className="w-[74px] h-[74px] rounded-full bg-surface grid place-items-center text-center">
@@ -64,13 +66,13 @@ export default function ReadinessCard() {
       <ReadinessRow
         label="Down-payment savings"
         status="ready"
-        statusText="✓ Ready"
+        statusText="Ready"
         isFirst
       />
       <ReadinessRow
         label="Credit health"
         status="ready"
-        statusText="✓ Ready"
+        statusText="Ready"
       />
       <ReadinessRow
         label="Debt-to-income"

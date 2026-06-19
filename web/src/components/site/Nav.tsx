@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
 import Container from "./Container";
+import { cn } from "@/lib/utils";
+import { btnPrimary, btnGhost } from "./button-styles";
 
 const navLinks = [
   { label: "How it works", href: "#how" },
@@ -15,13 +18,17 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-10 bg-cream/80 backdrop-blur border-b border-line">
+    <nav className="sticky top-0 z-50 bg-cream/80 backdrop-blur border-b border-line">
       <Container>
-        <div className="flex items-center justify-between h-[72px]">
+        <div className="flex items-center justify-between h-[var(--nav-h)]">
           {/* Logo */}
-          <span className="font-serif font-bold text-[25px] text-navy tracking-[-0.5px]">
+          <Link
+            href="/"
+            aria-label="Keyz home"
+            className="font-serif font-bold text-[25px] text-navy tracking-[-0.5px]"
+          >
             Key<span className="text-sage">z</span>
-          </span>
+          </Link>
 
           {/* Desktop nav links — hidden below md */}
           <div className="hidden md:flex gap-[30px] text-[15px] text-brandmuted font-medium">
@@ -38,16 +45,10 @@ export default function Nav() {
 
           {/* Desktop CTAs — hidden below md */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="#"
-              className="rounded-[11px] px-6 py-3 text-[15px] font-semibold border border-linecool text-navy transition-colors hover:bg-linecool/40"
-            >
+            <a href="#" className={btnGhost}>
               Sign in
             </a>
-            <a
-              href="#"
-              className="rounded-[11px] px-6 py-3 text-[15px] font-semibold bg-navy text-white transition-opacity hover:opacity-90"
-            >
+            <a href="#" className={btnPrimary}>
               Check my readiness
             </a>
           </div>
@@ -85,14 +86,14 @@ export default function Nav() {
               <div className="pt-4 flex flex-col gap-3">
                 <a
                   href="#"
-                  className="flex items-center justify-center min-h-[44px] rounded-[11px] px-6 text-[15px] font-semibold border border-linecool text-navy transition-colors hover:bg-linecool/40"
+                  className={cn(btnGhost, "w-full text-center min-h-[44px] flex items-center justify-center")}
                   onClick={() => setOpen(false)}
                 >
                   Sign in
                 </a>
                 <a
                   href="#"
-                  className="flex items-center justify-center min-h-[44px] rounded-[11px] px-6 text-[15px] font-semibold bg-navy text-white transition-opacity hover:opacity-90"
+                  className={cn(btnPrimary, "w-full flex items-center justify-center min-h-[44px]")}
                   onClick={() => setOpen(false)}
                 >
                   Check my readiness

@@ -1,9 +1,10 @@
 import Container from "./Container";
 import ReadinessCard from "./ReadinessCard";
+import { btnPrimary, btnGhost } from "./button-styles";
 
 export default function Hero() {
   return (
-    <header className="pt-[72px] pb-20">
+    <section aria-label="Introduction" className="pt-[var(--nav-h)] pb-20">
       <Container>
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-[54px] items-center">
           {/* Left column: copy */}
@@ -31,16 +32,10 @@ export default function Hero() {
 
             {/* CTA buttons */}
             <div className="flex gap-[14px] items-center">
-              <a
-                href="#"
-                className="rounded-[11px] px-6 py-3 text-[15px] font-semibold bg-navy text-white transition-opacity hover:opacity-90"
-              >
+              <a href="#" className={btnPrimary}>
                 Check my readiness →
               </a>
-              <a
-                href="#how"
-                className="rounded-[11px] px-6 py-3 text-[15px] font-semibold border border-linecool text-navy transition-colors hover:bg-linecool/40"
-              >
+              <a href="#how" className={btnGhost}>
                 See how it works
               </a>
             </div>
@@ -48,15 +43,15 @@ export default function Hero() {
             {/* Reassurance row */}
             <div className="mt-5 flex gap-[18px] text-[13.5px] text-brandmuted flex-wrap">
               <span className="flex items-center gap-[7px]">
-                <i className="not-italic w-[7px] h-[7px] rounded-full bg-sage inline-block" />
+                <span aria-hidden="true" className="w-[7px] h-[7px] rounded-full bg-sage inline-block" />
                 Free for buyers
               </span>
               <span className="flex items-center gap-[7px]">
-                <i className="not-italic w-[7px] h-[7px] rounded-full bg-sage inline-block" />
+                <span aria-hidden="true" className="w-[7px] h-[7px] rounded-full bg-sage inline-block" />
                 Bank-level security
               </span>
               <span className="flex items-center gap-[7px]">
-                <i className="not-italic w-[7px] h-[7px] rounded-full bg-sage inline-block" />
+                <span aria-hidden="true" className="w-[7px] h-[7px] rounded-full bg-sage inline-block" />
                 No credit impact
               </span>
             </div>
@@ -66,6 +61,6 @@ export default function Hero() {
           <ReadinessCard />
         </div>
       </Container>
-    </header>
+    </section>
   );
 }
