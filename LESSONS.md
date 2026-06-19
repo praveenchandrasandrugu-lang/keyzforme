@@ -73,4 +73,12 @@ project that gets better the more you build.
 - [SUPABASE] Current key is the **publishable** key (`sb_publishable_…`, env `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`), not the legacy `anon` key. A connectivity health check must do a real round-trip (`await supabase.auth.getClaims()`) — constructing the client throws nothing. (Why: legacy naming is silent tech debt; a no-op check proves nothing.)
 - [SUBAGENT] When dispatching an implementer, specify which files go in which commit explicitly — a literal `git add fileA fileB` put `package.json` in the wrong commit, leaving an earlier commit non-buildable. (Why: cosmetic but violates "every commit builds".)
 
+## Homepage build (2026-06-19)
+
+- [RESPONSIVE] Test the responsive nav at the **in-between widths (~800–1000px)**, not just the named breakpoints — switching mobile→desktop nav at `md` (768px) crammed 4 links + 2 buttons until ~1024px. Switch at `lg` and add `whitespace-nowrap` to labels. (Why: a 768/1280 sweep passed but the tablet zone wrapped and crowded; the user caught it.)
+- [COPY] For a mockup port, copy must be **verbatim** — a subagent rewrote the Marketplace lead + bullets in its own words. Spec review MUST diff rendered text against the source line-by-line. (Why: copy fidelity matters on a client site, and "reasonable substitute" copy reads as done but isn't.)
+- [RESPONSIVE] The approved mockup is **desktop-only** — mobile treatments (hamburger nav, reduced hero top-padding) are unspecified and must be DESIGNED, not ported. Make desktop-mockup paddings responsive (`pt-10 md:pt-[var(--nav-h)]`). (Why: porting 72px hero top-padding straight to mobile left a ~144px gap above the fold; the user flagged it twice.)
+- [A11Y] **Accessibility overrides mockup fidelity.** The mockup used sage for small eyebrow text (~2.8:1, fails AA) — use `text-green` for small text per the brand rule (sage = decoration/large only). The gold "wait" status `#C08A2D` is ~3:1, borderline at 14px — flag locked brand colors that fail AA at text size rather than silently shipping them. (Why: a concept mockup's decorative colors aren't all AA at text size.)
+- [A11Y] Give every interactive element a visible `focus-visible` ring (the global `outline-ring/50` was invisible on navy buttons) and `aria-hidden` on decorative lucide icons. (Why: keyboard users need visible focus; lucide SVGs otherwise get announced.)
+
 _Newest project-specific lessons go below as we build._
