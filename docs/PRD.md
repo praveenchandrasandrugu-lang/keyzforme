@@ -44,7 +44,7 @@
 
 | # | Slice | What it is | Status |
 |---|-------|-----------|--------|
-| 0 | **Foundation** | Next.js (App Router) + TS strict + Tailwind + shadcn/ui, Supabase wired, deployed to Vercel | ← starting now |
+| 0 | **Foundation** | Monorepo: `web/` (Next.js + TS + Tailwind + shadcn/ui → Vercel) + `api/` (FastAPI + Alembic → Railway), Supabase wired, pre-commit hooks | ← starting now |
 | 1 | **Marketing homepage** | The approved mockup. Public, no login. Design already locked. | ← starting now |
 | 2 | **Contact form** | "Ask a question" → store in Supabase + email Praveen (Resend) | next |
 | 3 | **Auth + roles** | Signup/login, three roles, role-based dashboards | |
@@ -83,15 +83,26 @@ Locked 2026-06-18 (full system in memory `design-brand-direction`; build target 
 
 ## 7. Tech & hosting
 
-- **Frontend + backend**: Next.js (App Router) + TypeScript (strict, no `any`) + Tailwind + shadcn/ui.
-  Backend = Server Actions / Route Handlers in the same app (no separate server).
-- **Icons**: lucide-react.
-- **Database**: **Supabase** (hosted Postgres). Also Supabase Auth for Slice 3.
+**Two-service architecture in one monorepo** (`web/` + `api/`). Confirmed 2026-06-19.
+
+- **Frontend (`web/`)**: **Next.js 16** (App Router, TS strict, no `any`) + **Tailwind CSS v4** +
+  **shadcn/ui on Base UI** (`base-nova`). Hosts on **Vercel** (deploys from the `web/` subdir).
+  Icons: **lucide-react**.
+- **Backend (`api/`)**: **Python FastAPI** (separate service) — owns **all** data access + business
+  logic. Tooling: uv, Pydantic v2, SQLAlchemy 2.0, Alembic, pytest, ruff, mypy. Hosts on **Railway**
+  (deploys from the `api/` subdir).
+- **Database / Auth**: **Supabase** (hosted Postgres), **two projects (dev + prod)**. Postgres = the DB;
+  Supabase Auth = identity/JWT; Storage = files. **Alembic owns the app-table schema**; Supabase owns
+  the `auth` schema.
+- **Data boundary**: Next.js uses Supabase **only for auth** (obtain JWT). It makes **no direct DB
+  reads** — all data flows through FastAPI. Auth flow: Supabase Auth → JWT → `Authorization: Bearer`
+  to FastAPI → FastAPI verifies vs Supabase JWKS → authorizes by role → queries Postgres.
 - **Email**: **Resend** (form submission → email to Praveen).
-- **Hosting**: **Vercel**, preview deploy on every push. Share via the free `*.vercel.app` URL.
+- **Hosting**: **Vercel** (web) + **Railway** (api), preview deploy on every push. Share via the free
+  `*.vercel.app` URL.
 - **Domain**: none required to ship/share. Optional custom domain later (a variant Praveen owns —
   e.g. `trykeyz.com`; keyzforme.com belongs to Shawn and is off-limits). Add to Vercel any time.
-- **Secrets**: `.env.local` (git-ignored) for Supabase / Resend keys. Never commit keys.
+- **Secrets**: `.env.local` / Railway env vars (git-ignored). Never commit keys.
 
 ## 8. Out of scope
 
