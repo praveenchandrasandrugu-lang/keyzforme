@@ -81,4 +81,11 @@ project that gets better the more you build.
 - [A11Y] **Accessibility overrides mockup fidelity.** The mockup used sage for small eyebrow text (~2.8:1, fails AA) — use `text-green` for small text per the brand rule (sage = decoration/large only). The gold "wait" status `#C08A2D` is ~3:1, borderline at 14px — flag locked brand colors that fail AA at text size rather than silently shipping them. (Why: a concept mockup's decorative colors aren't all AA at text size.)
 - [A11Y] Give every interactive element a visible `focus-visible` ring (the global `outline-ring/50` was invisible on navy buttons) and `aria-hidden` on decorative lucide icons. (Why: keyboard users need visible focus; lucide SVGs otherwise get announced.)
 
+## Deploy / Vercel (2026-06-19)
+
+- [VERCEL] For a monorepo, set the project **Root Directory = `web`** in the Vercel import (or it builds from the repo root, finds no `package.json`, and fails). (Why: Vercel defaults to the git root.)
+- [VERCEL] New projects enable **Deployment Protection → "Require Log In"**, which puts a Vercel login wall on the site — anyone you share it with is blocked. For a public marketing page, turn it **OFF** (Settings → Deployment Protection) and **Save**. (Why: the deploy succeeded but the URL redirected everyone to a Vercel login.)
+- [VERCEL] Share the **hash-less production alias** (`keyzforme-….vercel.app`), NOT the **deployment-specific URL** (`keyzforme-<hash>-….vercel.app`). Deployment-hash URLs stay protected even after "Require Log In" is off; only the clean production/preview alias goes public. (Why: both looked similar; the hash one kept showing the login wall.)
+- [VERCEL] `vercel` is only a bare command if installed globally. With `npx`, it's **`npx vercel …`** (a bare `vercel link` errors "not recognized"). Login (`npx vercel login`) is saved globally, so once the user logs in, agent-run `npx vercel` calls are authenticated too.
+
 _Newest project-specific lessons go below as we build._
