@@ -4,7 +4,7 @@ import { btnPrimary, btnGhost } from "./button-styles";
 
 export default function Hero() {
   return (
-    <section aria-label="Introduction" className="pt-[var(--nav-h)] pb-20">
+    <section aria-label="Introduction" className="pt-10 md:pt-[var(--nav-h)] pb-20">
       <Container>
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-[54px] items-center">
           {/* Left column: copy */}

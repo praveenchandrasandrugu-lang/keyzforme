@@ -88,14 +88,16 @@ export default function Marketplace() {
                 </li>
               ))}
             </ul>
-            <button
+            <a
+              href="#"
               className={cn(
                 "rounded-[11px] px-6 py-3 text-[15px] font-semibold text-white",
                 "border border-mktborder transition-colors hover:bg-white/5",
+                "inline-block",
               )}
             >
               Explore the marketplace
-            </button>
+            </a>
           </div>
 
           {/* Right column — compare card */}
