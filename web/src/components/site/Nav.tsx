@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
 import Container from "./Container";
+import Logo from "./Logo";
 import { cn } from "@/lib/utils";
 import { btnPrimary, btnGhost } from "./button-styles";
 
@@ -22,13 +22,7 @@ export default function Nav() {
       <Container>
         <div className="flex items-center justify-between h-[var(--nav-h)]">
           {/* Logo */}
-          <Link
-            href="/"
-            aria-label="Keyz home"
-            className="font-serif font-bold text-[25px] text-navy tracking-[-0.5px]"
-          >
-            Key<span className="text-sage">z</span>
-          </Link>
+          <Logo href="/" aria-label="Keyz home" />
 
           {/* Desktop nav links — hidden below md */}
           <div className="hidden md:flex gap-[30px] text-[15px] text-brandmuted font-medium">
