@@ -1,26 +1,91 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@custom-variant dark (&:is(.dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Tier 1 — brand primitives (static; emit bg-navy/text-navy/etc.) */
+@theme {
+  --color-cream: #F5F0E8;
+  --color-surface: #FFFFFF;
+  --color-navy: #1B3A6B;
+  --color-ink: #1F2B3D;
+  --color-brandmuted: #566377;
+  --color-sage: #7C9A7E;
+  --color-green: #3F6B4E;
+  --color-pill: #DDE7DE;
+  --color-pilltext: #3C5A45;
+  --color-line: #E7E0D2;
+  --color-line2: #ECEADF;
+  --color-gold: #C08A2D;
+  --shadow-card: 0 24px 60px -28px rgba(27, 58, 107, 0.35);
 }
 
+/* fonts + any var()-referencing token MUST be inline or the utility won't resolve */
+@theme inline {
+  --font-serif: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+/* Tier 2 — shadcn semantic roles exposed as utilities, each → a Tier-1 primitive */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.75rem;
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-navy);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--color-pill);
+  --secondary-foreground: var(--color-pilltext);
+  --muted: var(--color-pill);
+  --muted-foreground: var(--color-brandmuted);
+  --accent: var(--color-sage);
+  --accent-foreground: var(--color-pilltext);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-line);
+  --input: var(--color-line);
+  --ring: var(--color-navy);
+}
+
+@layer base {
+  * { @apply border-border outline-ring/50; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans), system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  h1, h2, h3 {
+    font-family: var(--font-serif), Georgia, serif;
+    color: var(--color-navy);
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+  }
 }
