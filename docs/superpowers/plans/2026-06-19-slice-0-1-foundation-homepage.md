@@ -4,7 +4,9 @@
 
 **Goal:** Stand up a deployed Next.js + Tailwind + shadcn/ui app wired to Supabase (Slice 0), then build the public marketing homepage to match `mockups/homepage.html` section-for-section (Slice 1).
 
-**Architecture:** App Router, TypeScript strict. Design tokens live in `src/app/globals.css` via Tailwind v4 `@theme` (single source of truth for the locked palette/fonts). The homepage is composed in `src/app/page.tsx` from one presentational component per section under `src/components/site/`. Supabase clients (browser + server) are wired now but no tables yet — those arrive in Slice 2/3. Backend stays inside the Next.js app (Server Actions / Route Handlers); no separate server.
+**Architecture:** App Router, TypeScript strict. **This app lives in `web/`** (monorepo — the FastAPI backend is a sibling service in `api/`, see the backend-foundation plan). Design tokens live in `web/src/app/globals.css` via Tailwind v4 `@theme` (single source of truth for the locked palette/fonts). The homepage is composed in `web/src/app/page.tsx` from one presentational component per section under `web/src/components/site/`. Next.js uses Supabase **only for auth** (obtain a JWT); **all data access goes through the FastAPI backend** — Next.js makes no direct DB reads (decision locked 2026-06-19, PRD §7). Supabase clients (browser + server) are wired now for the auth path; no tables in this app.
+
+> **⚠️ Path update (2026-06-19):** Tasks 0.1–0.4 were executed when the app was at the repo root, then the whole app was moved into `web/` for the monorepo. Every path below that reads `src/...`, `package.json`, etc. is now **relative to `web/`** — run all `npm`/`npx` commands from inside `web/`. The backend (`api/`), Railway deploy, and pre-commit hooks live in the separate **`2026-06-19-slice-0-backend-foundation.md`** plan.
 
 **Tech Stack:** Next.js 16 (App Router, Turbopack default), TypeScript (strict, no `any`), Tailwind CSS v4, shadcn/ui, lucide-react, `@supabase/supabase-js` + `@supabase/ssr`, deployed on Vercel.
 
@@ -435,7 +437,7 @@ This needs interactive login — Praveen runs the auth step (suggest the `!` pre
 git push origin dev
 ```
 
-- [ ] **Step 2:** Link the local dir from the CLI so Step 4 is non-interactive (do this, not just a dashboard import): `npx vercel link`. Framework auto-detects Next.js.
+- [ ] **Step 2:** Link the project and set the **monorepo root directory to `web/`** (critical — without this Vercel builds from the repo root, finds no `package.json`, and fails). Run `npx vercel link` from inside `web/`, OR set Project Settings → General → **Root Directory = `web/`** in the dashboard. Framework auto-detects Next.js. Run the remaining Vercel CLI commands (env add, deploy) from inside `web/`.
 
 - [ ] **Step 3:** Add env vars BEFORE the first build (a build without them runs with `undefined`). Either in Vercel Project Settings → Environment Variables, or via CLI, add the SAME names as `.env.local`:
 
