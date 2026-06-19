@@ -24,21 +24,21 @@ export default function Nav() {
           {/* Logo */}
           <Logo href="/" aria-label="Keyz home" />
 
-          {/* Desktop nav links — hidden below md */}
-          <div className="hidden md:flex gap-[30px] text-[15px] text-brandmuted font-medium">
+          {/* Desktop nav links — hidden below lg */}
+          <div className="hidden lg:flex gap-7 text-[15px] text-brandmuted font-medium">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="hover:text-navy transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+                className="whitespace-nowrap hover:text-navy transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
               >
                 {link.label}
               </a>
             ))}
           </div>
 
-          {/* Desktop CTAs — hidden below md */}
-          <div className="hidden md:flex items-center gap-3">
+          {/* Desktop CTAs — hidden below lg */}
+          <div className="hidden lg:flex items-center gap-3">
             <a href="#" className={btnGhost}>
               Sign in
             </a>
@@ -47,9 +47,9 @@ export default function Nav() {
             </a>
           </div>
 
-          {/* Hamburger button — visible below md only */}
+          {/* Hamburger button — visible below lg only */}
           <button
-            className="md:hidden flex items-center justify-center w-11 h-11 rounded-lg text-navy hover:bg-line/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+            className="lg:hidden flex items-center justify-center w-11 h-11 rounded-lg text-navy hover:bg-line/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((prev) => !prev)}
@@ -61,7 +61,7 @@ export default function Nav() {
 
       {/* Mobile dropdown panel */}
       {open && (
-        <div className="md:hidden bg-cream border-b border-line">
+        <div className="lg:hidden bg-cream border-b border-line">
           <Container>
             <div className="py-4 flex flex-col">
               {/* Stacked nav links */}
