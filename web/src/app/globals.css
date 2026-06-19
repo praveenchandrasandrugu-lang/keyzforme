@@ -36,6 +36,11 @@
 
   /* compare card shadow */
   --shadow-compare: 0 30px 60px -30px rgba(0,0,0,0.5);
+
+  /* CTA band gradient */
+  --color-ctafrom: #16315A;
+  --color-ctato: #244B85;
+  --color-ctasub: #BCCAE2;
 }
 
 /* fonts + any var()-referencing token MUST be inline or the utility won't resolve */
