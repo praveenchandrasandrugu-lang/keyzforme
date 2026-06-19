@@ -94,6 +94,7 @@ export default function Marketplace() {
                 "rounded-[11px] px-6 py-3 text-[15px] font-semibold text-white",
                 "border border-mktborder transition-colors hover:bg-white/5",
                 "inline-block",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy",
               )}
             >
               Explore the marketplace

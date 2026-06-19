@@ -17,7 +17,7 @@ export default function Logo({ href, className, "aria-label": ariaLabel }: LogoP
 
   if (href) {
     return (
-      <Link href={href} aria-label={ariaLabel}>
+      <Link href={href} aria-label={ariaLabel} className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2">
         {inner}
       </Link>
     );

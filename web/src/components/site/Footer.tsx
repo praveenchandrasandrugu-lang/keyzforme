@@ -40,7 +40,7 @@ export default function Footer() {
                 <a
                   key={label}
                   href="#"
-                  className="block mb-[9px] hover:text-navy transition-colors"
+                  className="block mb-[9px] hover:text-navy transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
                 >
                   {label}
                 </a>

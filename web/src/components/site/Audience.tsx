@@ -53,11 +53,11 @@ export default function Audience() {
               <p className="text-[14.5px] text-brandmuted mb-4">{body}</p>
 
               {cta.type === "free" ? (
-                <span className="inline-block mt-1 text-[12px] font-bold text-sage">
+                <span className="inline-block mt-1 text-[12px] font-bold text-green">
                   {cta.text}
                 </span>
               ) : (
-                <a href="#" className="text-green text-[14px] font-semibold">
+                <a href="#" className="text-green text-[14px] font-semibold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1">
                   {cta.text}
                 </a>
               )}

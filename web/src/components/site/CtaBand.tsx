@@ -4,7 +4,7 @@ export default function CtaBand() {
   return (
     <section className="pt-0 pb-16 md:pb-[88px]">
       <Container>
-        <div className="bg-[linear-gradient(135deg,var(--color-ctafrom),var(--color-navy)_55%,var(--color-ctato))] rounded-[26px] p-14 text-center text-white">
+        <div className="bg-[linear-gradient(135deg,var(--color-ctafrom),var(--color-navy)_55%,var(--color-ctato))] rounded-[26px] p-8 md:p-14 text-center text-white">
           <h2 className="text-white text-3xl md:text-[40px] font-semibold">
             Your first home is closer
             <br />
@@ -15,7 +15,7 @@ export default function CtaBand() {
           </p>
           <a
             href="#"
-            className="rounded-[11px] px-6 py-3 text-[15px] font-semibold bg-white text-navy transition-opacity hover:opacity-90"
+            className="rounded-[11px] px-6 py-3 text-[15px] font-semibold bg-white text-navy transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
             Check my readiness →
           </a>

@@ -30,7 +30,7 @@ export default function Nav() {
               <a
                 key={link.href}
                 href={link.href}
-                className="hover:text-navy transition-colors"
+                className="hover:text-navy transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
               >
                 {link.label}
               </a>
@@ -49,7 +49,7 @@ export default function Nav() {
 
           {/* Hamburger button — visible below md only */}
           <button
-            className="md:hidden flex items-center justify-center w-11 h-11 rounded-lg text-navy hover:bg-line/40 transition-colors"
+            className="md:hidden flex items-center justify-center w-11 h-11 rounded-lg text-navy hover:bg-line/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
             aria-label="Toggle menu"
             aria-expanded={open}
             onClick={() => setOpen((prev) => !prev)}
@@ -69,7 +69,7 @@ export default function Nav() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className="flex items-center min-h-[44px] text-[15px] font-medium text-brandmuted hover:text-navy transition-colors border-b border-line/60 last:border-b-0"
+                  className="flex items-center min-h-[44px] text-[15px] font-medium text-brandmuted hover:text-navy transition-colors border-b border-line/60 last:border-b-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-inset"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}

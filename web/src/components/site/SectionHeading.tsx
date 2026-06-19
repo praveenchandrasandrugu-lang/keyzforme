@@ -26,7 +26,7 @@ export default function SectionHeading({
     >
       <span
         className={cn(
-          "text-sage uppercase tracking-[0.08em] text-[13px] font-bold",
+          "text-green uppercase tracking-[0.08em] text-[13px] font-bold",
           eyebrowClassName,
         )}
       >
