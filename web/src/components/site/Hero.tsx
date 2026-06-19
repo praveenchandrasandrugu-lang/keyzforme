@@ -39,7 +39,7 @@ export default function Hero() {
               </a>
               <a
                 href="#how"
-                className="rounded-[11px] px-6 py-3 text-[15px] font-semibold border border-line text-navy transition-colors hover:bg-line/40"
+                className="rounded-[11px] px-6 py-3 text-[15px] font-semibold border border-linecool text-navy transition-colors hover:bg-linecool/40"
               >
                 See how it works
               </a>
