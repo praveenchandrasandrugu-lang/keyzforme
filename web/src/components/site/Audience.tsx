@@ -7,19 +7,19 @@ const cards = [
     Icon: House,
     title: "For home buyers",
     body: "Your finances, a real coach, and ranked offers — from “someday” to keys-in-hand.",
-    cta: { text: "Always free →", type: "free" as const },
+    cta: "Always free →",
   },
   {
     Icon: Compass,
     title: "For financial counselors",
     body: "Coach more clients with their full picture in one place — and get paid to do it.",
-    cta: { text: "Partner with us →", type: "link" as const },
+    cta: "Partner with us →",
   },
   {
     Icon: Handshake,
     title: "For lenders & realtors",
     body: "Meet ready, verified buyers actively comparing offers — not cold leads.",
-    cta: { text: "List on Keyz →", type: "link" as const },
+    cta: "List on Keyz →",
   },
 ];
 
@@ -52,15 +52,12 @@ export default function Audience() {
               <h3 className="text-[21px] mb-[9px]">{title}</h3>
               <p className="text-[14.5px] text-brandmuted mb-4">{body}</p>
 
-              {cta.type === "free" ? (
-                <span className="inline-block mt-1 text-[12px] font-bold text-green">
-                  {cta.text}
-                </span>
-              ) : (
-                <a href="#" className="text-green text-[14px] font-semibold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1">
-                  {cta.text}
-                </a>
-              )}
+              <a
+                href="#"
+                className="text-green text-[14px] font-semibold rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
+              >
+                {cta}
+              </a>
             </div>
           ))}
         </div>

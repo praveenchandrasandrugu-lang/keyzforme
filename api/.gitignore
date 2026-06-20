@@ -1,0 +1,14 @@
+# Python virtual environment (uv-managed — recreated from uv.lock via `uv sync`)
+.venv/
+
+# Python bytecode + caches
+__pycache__/
+*.py[cod]
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Local secrets (real values) — never commit; see .env.example for the NAMES
+.env

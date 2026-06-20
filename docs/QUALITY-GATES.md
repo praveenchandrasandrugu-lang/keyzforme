@@ -7,8 +7,8 @@ checklists for security, performance, reliability, and data.
 > **Stack:** Next.js 16 (App Router) + TS strict + Tailwind v4 + shadcn (Base UI) on **Vercel**;
 > FastAPI on **Railway** (planned); **Supabase** (auth + data). Keep the halves that apply.
 >
-> **Status:** frontend is scaffolded (so the pre-commit hook can be wired **now**); the FastAPI
-> service isn't built yet. Wiring the gates is a foundation task — cheaper now than retrofitting.
+> **Status:** §1 pre-commit hook is **WIRED** (2026-06-19) for both `web/` and `api/`. §2 CI mirror
+> still to do. Wiring the gates is a foundation task — cheaper now than retrofitting.
 
 ---
 
@@ -16,35 +16,26 @@ checklists for security, performance, reliability, and data.
 
 Stops inconsistent code/UI from entering a commit.
 
-### Frontend — husky + lint-staged (wire this now; package.json exists)
-```bash
-npm i -D husky lint-staged          # prettier/eslint already present
-npx husky init
-echo "npx lint-staged" > .husky/pre-commit
-```
-```jsonc
-// package.json
-"lint-staged": {
-  "*.{ts,tsx}": ["eslint --fix", "prettier --write", "bash -c 'tsc --noEmit'"],
-  "*.{css,md,json}": ["prettier --write"]
-}
-```
+### Wired — husky + lint-staged, ONE hook for BOTH stacks
 
-### Backend (FastAPI, when it exists) — the `pre-commit` framework
-```yaml
-# .pre-commit-config.yaml
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.0
-    hooks: [{id: ruff, args: [--fix]}, {id: ruff-format}]
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.0
-    hooks: [{id: mypy}]
-  - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.18.0
-    hooks: [{id: gitleaks}]   # secret scanning — §4
-```
-> ⚠️ A hook can be skipped with `--no-verify`. That's why §2 (CI) exists — it can't be bypassed.
+A private root `package.json` owns the git hooks. `.husky/pre-commit` runs `npx lint-staged`, which
+routes staged files to per-stack gates via `.lintstagedrc.mjs`:
+
+| Staged glob | Commands run |
+|-------------|--------------|
+| `web/**/*.{ts,tsx,js,jsx,css}` | `npm --prefix web run lint` (eslint) · `… run typecheck` (tsc) · `node scripts/check-tokens.mjs` |
+| `api/**/*.py` | `uv --directory api run ruff check .` · `ruff format --check .` · `mypy app` |
+
+`scripts/check-tokens.mjs` fails the commit on raw hex or bare `navy`/`sage` anywhere in `web/src`
+**except** the theme file (`web/src/app/globals.css`, where Tier-1 primitives are defined) and
+`web/src/components/site/**` (marketing components that consume primitives directly).
+
+**Verified 2026-06-19:** a raw-hex web file and an unused-import in an api file are each blocked by
+the hook (HEAD doesn't move); clean changes pass.
+
+> Requires `uv` on PATH for the api gate — the Astral installer adds it; restart the terminal once
+> after installing. ⚠️ A hook can be skipped with `--no-verify`. That's why §2 (CI) exists — it
+> can't be bypassed. (Secret-scanning via gitleaks — §4 — can be added here later.)
 
 ## 2. CI mirror (GitHub Actions) — the un-bypassable gate
 
