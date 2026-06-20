@@ -101,4 +101,14 @@ project that gets better the more you build.
 - [UV] Scaffold a service with `uv init --app` (flat `app/` layout), not `--package` (a `src/` library layout you'd delete, leaving build config pointing at nothing). Add `pythonpath = ["."]` to `[tool.pytest.ini_options]` so tests can `import app`. (Why: matches the official uv-FastAPI guide and keeps zero leftover config.)
 - [ALEMBIC] Alembic's generated migration template always imports `op`/`sa` and uses old `Union` typing — modernize `script.py.mako` (use `str | None`, sorted imports) and add a ruff per-file-ignore for `F401` in `migrations/versions/*` so generated migrations pass the lint gate. (Why: ruff `F401`/`UP` flagged every generated migration.)
 
+## PROD promotion (2026-06-19)
+
+- [VERCEL] The Vercel **MCP has NO env-var tool** (only deployments/projects/logs/domains/docs). To set env vars, use the **CLI** (`vercel env add/ls/rm`) or the dashboard. (Why: searched the whole MCP toolset looking for one — it isn't there.)
+- [VERCEL] `vercel env add --force` (overwrite) **hangs** in non-interactive agent shells even with `--yes`/`--value`. The plain **`"value" | vercel env add NAME <env>`** (stdin) form works first-try. Set different values per environment by adding the SAME key 3× (production/preview/development). (Why: two `--force` runs hung and had to be killed; stdin adds were instant.)
+- [VERCEL] For `NEXT_PUBLIC_*` URLs the CLI may auto-mark production/preview **Sensitive** — pointless (they still inline at build) and it blocks reading the value back. Pass `--no-sensitive`, or just flip the toggle in the dashboard. (Why: ended with a mixed sensitive/non-sensitive state.)
+- [VERCEL] The dashboard env dropdown only offers environments the key **isn't already using** — if it shows just one, a prior save grabbed the others. `vercel env ls` is the source of truth (the dashboard had glitched to zero saved). (Why: the per-env dropdown looked broken; it was stale state.)
+- [SUPABASE] `SUPABASE_URL` (for JWKS/auth) is the **base** `https://<ref>.supabase.co` — strip the `/rest/v1/` suffix the dashboard's API-URL field shows. Convert the **Session pooler (5432)** URI scheme to `postgresql+asyncpg://` for SQLAlchemy. (Why: the dashboard hands you the REST URL and a `postgresql://` URI; both need fixing.)
+- [SUPABASE] The connected Supabase **MCP can be a different account** than the project's — here it only saw the HR project, not Keyz's. Provision/manage Keyz Supabase in the dashboard, not via MCP. (Why: `list_projects` didn't show either Keyz project.)
+- [RAILWAY] "Generate Domain" asks for **the internal port your app listens on** — enter **8080** (Railway's detected port behind the `$PORT` binding), not 80/443. (Why: the prefill is 8080 and that's what the uvicorn container serves.)
+
 _Newest project-specific lessons go below as we build._
