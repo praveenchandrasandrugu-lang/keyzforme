@@ -68,9 +68,28 @@ Run the server: `uv run uvicorn app.main:app --reload` → `/health`, `/health/d
 
 ## Deploy (Railway)
 
-Root Directory = `api`; Nixpacks detects uv via `uv.lock`. Start command
-`uvicorn app.main:app --host 0.0.0.0 --port $PORT`; healthcheck `/health`. Set the **prod** Supabase
-env vars on the service (and migrate that project to ES256 too). Run `alembic upgrade head` against
-prod once. See `api/railway.json`.
+Two services, each Root Directory = `api`, **Railpack** builder (not Nixpacks — Railpack must
+override the start command), Watch Paths = `api/**`. Start command
+`uvicorn app.main:app --host 0.0.0.0 --port $PORT`; healthcheck `/health`. See `api/railway.json`.
+
+| Service | Tracks branch | Supabase project | URL |
+| --- | --- | --- | --- |
+| `keyz-api-dev` | `dev` | dev | https://keyz-api-dev-production.up.railway.app |
+| `keyz-api-prod` | `main` | prod (`xpuvztvfhtikyoegmyqr`) | https://keyz-api-prod-production.up.railway.app |
+
+Per service set the four env vars above (its own Supabase project's `DATABASE_URL` +
+`SUPABASE_URL`, plus `SUPABASE_JWT_AUD` and `CORS_ORIGINS`). Each Supabase project must be on
+**ES256** signing keys. Run `alembic upgrade head` against each project once.
+
+## Frontend wiring (Vercel)
+
+`web/` calls this API via `NEXT_PUBLIC_API_URL`, set **per Vercel environment** so each web
+deploy hits the matching API:
+
+| Vercel env | `NEXT_PUBLIC_API_URL` |
+| --- | --- |
+| Production | prod Railway URL |
+| Preview | dev Railway URL |
+| Development | `http://localhost:8000` (local also reads `web/.env.local`) |
 
 _Cross-reference: `docs/architecture/frontend.md` (planned)._

@@ -54,3 +54,5 @@ next-env.d.ts
 # Obsidian vault (W:\Keyz-Notes\) — local-only tooling, not for the public repo.
 /.claude/commands/learn.md
 /.claude/commands/vault-note.md
+
+.vercel
